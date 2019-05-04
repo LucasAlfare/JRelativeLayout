@@ -96,27 +96,27 @@ public class RelativeLayout implements LayoutManager {
         /**
          * Os paramentros abaixo aceitam valores true e false.
          */
-        public static final String CENTRO_PARENT = "centroParent";
-        public static final String TOPO_PARENT = "topoParent";
-        public static final String BASE_PARENT = "baseParent";
-        public static final String ESQUERDA_PARENT = "esquerdaParent";
-        public static final String DIREITA_PARENT = "direitaParent";
+        public static final String CENTRO_PARENT = "center";//centroParent
+        public static final String TOPO_PARENT = "parentTop";//topoParent
+        public static final String BASE_PARENT = "parentBotton";//baseParent
+        public static final String ESQUERDA_PARENT = "parentLeft";//esquerdaParent
+        public static final String DIREITA_PARENT = "parentRight";//direitaParent
 
-        public static final String CENTRO_VERTICAL = "centroVertical";
-        public static final String CENTRO_HORIZONTAL = "centroHorizontal";
+        public static final String CENTRO_VERTICAL = "centerVertical";//centroVertical
+        public static final String CENTRO_HORIZONTAL = "centerHorizontal";//centroHorizontal
 
         /**
          * Os valores abaixo aceitam valores de nomes de componentes.
          */
-        public static final String COLADO_ACIMA_DE = "coladoAcimaDe";
-        public static final String COLADO_ABAIXO_DE = "coladoAbaixoDe";
-        public static final String COLADO_ESQUERDA_DE = "coladoEsquerdaDe";
-        public static final String COLADO_DIREITA_DE = "coladoDireitaDe";
+        public static final String COLADO_ACIMA_DE = "topLine";//coladoAcimaDe
+        public static final String COLADO_ABAIXO_DE = "baseLine";//coladoAbaixoDe
+        public static final String COLADO_ESQUERDA_DE = "leftLine";//coladoEsquerdaDe
+        public static final String COLADO_DIREITA_DE = "rightLine";//coladoDireitaDe
 
-        public static final String ACIMA_DE = "acimaDe";
-        public static final String ABAIXO_DE = "abaixoDe";
-        public static final String ESQUERDA_DE = "esquerdaDe";
-        public static final String DIREITA_DE = "direitaDe";
+        public static final String ACIMA_DE = "top";//acimaDe
+        public static final String ABAIXO_DE = "bellow";//abaixoDe
+        public static final String ESQUERDA_DE = "left";//esquerdaDe
+        public static final String DIREITA_DE = "right";//direitaDe
 
         /**
          * Os valores abaixo aceitam valores numericos.
