@@ -154,7 +154,8 @@ public class RelativeLayout implements LayoutManager {
 
         sizeUnknown = false;
 
-        return dim;
+        //return dim;
+        return parent.getSize();
     }
 
     //Isso aqui eu so copiei, nem sei pra q serve.
@@ -170,7 +171,8 @@ public class RelativeLayout implements LayoutManager {
 
         sizeUnknown = false;
 
-        return dim;
+        //return dim;
+        return parent.getSize();
     }
 
     /**
@@ -190,6 +192,16 @@ public class RelativeLayout implements LayoutManager {
      */
     @Override
     public void layoutContainer(Container parent) {
+        if (sizeUnknown){
+            setSizes(parent);
+        }
+
+        double parentWidth = parent.getSize().width;
+        double parentHeight = parent.getSize().height;
+        Insets insets = parent.getInsets();
+        int centerX = (int) (parentWidth - (insets.left + insets.right)) / 2;
+        int centerY = (int) (parentHeight - (insets.top + insets.bottom)) / 2;
+
         //itera sobre todos os componentes adicionados no conteiner.
         for (int i = 0; i < parent.getComponentCount(); i++) {
             //para cada componente...
@@ -252,22 +264,25 @@ public class RelativeLayout implements LayoutManager {
                 //verifica-se qual parametro foi definido pelo usuário
                 switch (paramentro) {
                     case Parametros.CENTRO_PARENT:
-                        //Component componenteRelacionado = getComponentByName(valor, parent);
+                        int compPosX = 0;
+                        int compPosY = 0;
 
                         if (valor.equals(Valores.TRUE)){
                             //calcular a posicao do centro aqui
-                            System.out.println("posicionando no centro...");
+                            int centroParentW = parent.getWidth() / 2;
+                            int centroParentH = parent.getHeight() / 2;
 
-                        } else {
-                            //definir uma posicao padrao caso n seja definido nada
+                            compPosX = centroParentW - (componenteAtual.getWidth() / 2);
+                            compPosY = centroParentH - (componenteAtual.getHeight() / 2);
                         }
 
-                        //verifica qual o valor do parametro definido pelo usuario
-                        switch (valor) {
-                            case ",,,":
-                                //TODO...
-                                break;
-                        }
+                        componenteAtual.setBounds(
+                                compPosX,
+                                compPosY,
+                                componenteAtual.getPreferredSize().width,
+                                componenteAtual.getPreferredSize().height
+                        );
+
                         break;
                 }
             }
@@ -287,7 +302,7 @@ public class RelativeLayout implements LayoutManager {
     //Isso aqui eu so copiei, nem sei pra q serve.
     private void setSizes(Container parent) {
         int nComps = parent.getComponentCount();
-        Dimension d;
+        Dimension d = null;
 
         //Reset preferred/minimum width and height.
         preferredWidth = 0;
@@ -301,14 +316,15 @@ public class RelativeLayout implements LayoutManager {
                 d = c.getPreferredSize();
 
                 if (i > 0) {
-                    preferredWidth += d.width / 2;
+                    preferredWidth += d.width/2;
                     preferredHeight += vgap;
                 } else {
                     preferredWidth = d.width;
                 }
                 preferredHeight += d.height;
 
-                minWidth = Math.max(c.getMinimumSize().width, minWidth);
+                minWidth = Math.max(c.getMinimumSize().width,
+                        minWidth);
                 minHeight = preferredHeight;
             }
         }
