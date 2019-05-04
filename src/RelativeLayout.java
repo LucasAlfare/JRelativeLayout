@@ -5,72 +5,72 @@ import java.util.Objects;
 
 /**
  * ESSA CLASSE TO FAZENDO PRA TESTAR UMA COISA SO...
- * <p>
+ * 
  * Assim, minha intencao e verificar se e possivel ter um gerenciador
  * de layout no Swing que funcione de forma parecida com o proprio
  * RelativeLayout, que e do Android.
- * <p>
+ * 
  * Minha motivacao pra isso e basicamente o fato de que o RelativeLayout
  * no Android e um gerenciador muito facil de se utilizar. Ou seja,
  * podemos podemos layouts bem complexos apenas por codigo, sem mesmo
  * utilizar a interface de construcao do AndroidStudio.
- * <p>
+ * 
  * E fato que ja ha outros gerenciadores de layout no proprio Swing
  * que funcionam bem nesse ponto, como o GridBagLayout. Ha tambem
  * gerenciadores bem conhecidos, como o MigLayout, o qual e o mais pratico
  * que vi ate hoje.
- * <p>
+ * 
  * Entretanto, um gerenciador com a funcionalidade do RelativeLayout do
  * Android para Swing seria de grande ajuda para mim, visto que tenho
  * muita dificuldade em construir telas.
- * <p>
+ * 
  * Considerando o fato de esta classe vir a ser funcional algum dia
  * tambem e possivel almejar a possibilidade de ela ser util para outras pessoas
  * que venham a ter as mesmas dificuldades que eu. Assim, este projeto
  * de classe ficara guardado virtualmente no GitHub.
- * <p>
+ * 
  * Para efeitos de estudo, e importante saber que comecei o desenvolvimento
  * disso baseado no exemplo de gerenciador de layout customizado feito
  * pela propria Oracle. Nesse exemplo que eles fizeram, alem da explicacao
  * eles disponibilizaram a fonte do gerenciador, que no caso trata-se
  * de um "DiagonalLayout", que alinha todos os itens de forma diagonal.
- * <p>
+ * 
  * Aqui tem o link para a pagina do exemplo que to falando:
  * https://docs.oracle.com/javase/tutorial/uiswing/layout/custom.html
- * <p>
+ * 
  * Diante disso, copiei alguns trechos que achei basicos para um gerenciador
  * e estou adicionado, entao, minhas proprias implementacoes baseando-me
  * na minha experiencia de uso do RelativeLayout original do Android.
- * <p>
+ * 
  * *------------------------------------------------------------------*
  * *------------------------------------------------------------------*
- * <p>
+ * 
  * Eu planejo fazer forma de utilizacao desse gerenciador ser bem simples,
  * onde o usuario devera, basicamente, ao adicionar o componente X a um
  * conteiner, escrever todos os parametros que deseja, em um formato de String.
- * <p>
+ * 
  * Por exemplo:
- * <p>
+ * 
  * {@code conteiner.add(bt1, "alinharNoTopo=true alinharAbaixoDe=botao3")}
  * Obs.: possivelmente os parametros serao nomeados assim, mas ainda nao estao
  * definidos.
- * <p>
+ * 
  * Alem disso, obrigatoriamente ANTES DE ADICONAR os componentes ao conteiner
  * o usuario devera definir a propriedade NOME de cada componente. Assim, um
  * trecho de codigo de utilizacao devera ser da seguinte forma:
- * <p>
+ * 
  * {@code
  * JButton bt1 = new JButton();
  * bt1.setName("botao");
- * <p>
+ * 
  * JButton bt3 = new JButton();
  * bt3.setName("botao3");
- * <p>
+ * 
  * ...
- * <p>
+ * 
  * conteiner.add(bt1, "alinharNoTopo=true alinharAbaixoDe=botao3");
  * }
- * <p>
+ * 
  * TODO: criar enumeracao publica e estatica aqui para guardar todos os parametros e valores
  */
 @SuppressWarnings("ALL")
@@ -91,7 +91,7 @@ public class RelativeLayout implements LayoutManager {
 
     /**
      * Cria um RelativeLayout padrao.
-     * <p>
+     * 
      * No momento n tem nenhuma outra forma de criar um
      * RelativeLayout que nao seja essa. Tau.
      */
@@ -103,7 +103,7 @@ public class RelativeLayout implements LayoutManager {
      * Esse metodo faz parte da interface LayoutManager e
      * aqui eu uso ele para obter as "constraints" de cada
      * componente.
-     * <p>
+     * 
      * Vale esclarecer que essas "constraints" serao tratadas
      * como os comandos que o usuario ira definir para esse
      * componente em questao. Vale lembrar, tambem, que esse
@@ -164,11 +164,11 @@ public class RelativeLayout implements LayoutManager {
      * Esse metodo aqui faz parte da interface LayoutManager e
      * e chamado sempre que os componentes sao desenhados no
      * conteirer.
-     * <p>
+     * 
      * A idea desse metodo e basicamente "movimentar"/"posicionar"
      * esses componentes DENTRO do conteiner os quais estao
      * adicionados.
-     * <p>
+     * 
      * Assim, fica a cargo deste metodo tratar todos os comandos
      * definidos pelo usuario, como tambem realizar tais movimentacoes
      * e posicionamentos.
