@@ -5,9 +5,9 @@
  
  Assim, minha intencao e verificar se e possivel ter um gerenciador
  de layout no Swing que funcione de forma parecida com o proprio
- RelativeLayout, que e do Android.
+ com.main.RelativeLayout, que e do Android.
  
- Minha motivacao pra isso e basicamente o fato de que o RelativeLayout
+ Minha motivacao pra isso e basicamente o fato de que o com.main.RelativeLayout
  no Android e um gerenciador muito facil de se utilizar. Ou seja,
  podemos podemos layouts bem complexos apenas por codigo, sem mesmo
  utilizar a interface de construcao do AndroidStudio.
@@ -17,7 +17,7 @@
  gerenciadores bem conhecidos, como o MigLayout, o qual e o mais pratico
  que vi ate hoje.
  
- Entretanto, um gerenciador com a funcionalidade do RelativeLayout do
+ Entretanto, um gerenciador com a funcionalidade do com.main.RelativeLayout do
  Android para Swing seria de grande ajuda para mim, visto que tenho
  muita dificuldade em construir telas.
  
@@ -30,14 +30,14 @@
  disso baseado no exemplo de gerenciador de layout customizado feito
  pela propria Oracle. Nesse exemplo que eles fizeram, alem da explicacao
  eles disponibilizaram a fonte do gerenciador, que no caso trata-se
- de um "DiagonalLayout", que alinha todos os itens de forma diagonal.
+ de um "com.main.DiagonalLayout", que alinha todos os itens de forma diagonal.
  
  Aqui tem o link para a pagina do exemplo que to falando:
  https://docs.oracle.com/javase/tutorial/uiswing/layout/custom.html
  
  Diante disso, copiei alguns trechos que achei basicos para um gerenciador
  e estou adicionado, entao, minhas proprias implementacoes baseando-me
- na minha experiencia de uso do RelativeLayout original do Android.
+ na minha experiencia de uso do com.main.RelativeLayout original do Android.
  
 # PERSPECTIVA PARA A FORMA DE USAR.
  

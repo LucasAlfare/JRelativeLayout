@@ -1,4 +1,4 @@
-/*
+package com.main;/*
  * 1.2+ version.  Used by CustomLayoutDemo.java.
  */
 

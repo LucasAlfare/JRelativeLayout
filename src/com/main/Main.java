@@ -1,4 +1,8 @@
+package com.main;
+
 import javax.swing.*;
+
+import static com.main.RelativeLayout.Parametros.*;
 
 public class Main extends JFrame {
 
@@ -18,8 +22,7 @@ public class Main extends JFrame {
         JButton d = new JButton("button d");
         JButton e = new JButton("button e");
 
-        add(a, "parametro=kkk teste=");
-        add(b, "param=help oiamigo=hehehehe");
+        add(a, CENTRO_PARENT+"=true");
 
         setVisible(true);
     }
