@@ -1,6 +1,7 @@
 package com.main;
 
 import java.awt.*;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -227,16 +228,6 @@ public class RelativeLayout implements LayoutManager {
      */
     @Override
     public void layoutContainer(Container parent) {
-        if (sizeUnknown){
-            setSizes(parent);
-        }
-
-        double parentWidth = parent.getSize().width;
-        double parentHeight = parent.getSize().height;
-        Insets insets = parent.getInsets();
-        int centerX = (int) (parentWidth - (insets.left + insets.right)) / 2;
-        int centerY = (int) (parentHeight - (insets.top + insets.bottom)) / 2;
-
         //itera sobre todos os componentes adicionados no conteiner.
         for (int i = 0; i < parent.getComponentCount(); i++) {
             //para cada componente...
@@ -286,7 +277,7 @@ public class RelativeLayout implements LayoutManager {
                 String valor = comandos.get(j + 1);
 
                 /**
-                 Estrutura de switchs aninhados permite a correta identificacao
+                 Estrutura de ifs aninhados permite a correta identificacao
                  dos comandos, bem como dos valores que podem ser atribuidos
                  a cada.
 
@@ -352,21 +343,7 @@ public class RelativeLayout implements LayoutManager {
                                 componenteAtual.getPreferredSize().height
                         );
                     }
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-
-                else if(parametro.equals(Parametros.CENTRO_VERTICAL)){
+                } else if(parametro.equals(Parametros.CENTRO_VERTICAL)){
                     if (valor.equals(Valores.TRUE)){
                         int centroVerticalParentY = parent.getHeight() / 2;
 
@@ -388,35 +365,7 @@ public class RelativeLayout implements LayoutManager {
                                 componenteAtual.getPreferredSize().height
                         );
                     }
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                else if (parametro.equals(Parametros.COLADO_ACIMA_DE)){
+                } else if (parametro.equals(Parametros.COLADO_ACIMA_DE)){
                     Component componenteRelacionado = getComponentByName(valor, parent);
                     int topoRelacionadoY = componenteRelacionado.getY() - componenteAtual.getHeight();
 
@@ -456,16 +405,47 @@ public class RelativeLayout implements LayoutManager {
                             componenteAtual.getPreferredSize().width,
                             componenteAtual.getPreferredSize().height
                     );
-                }
+                } else if (parametro.equals(Parametros.ACIMA_DE)){
+                    Component componenteRelacionado = getComponentByName(valor, parent);
+                    int topoRelacionadoY = componenteRelacionado.getY() - componenteAtual.getHeight();
 
+                    componenteAtual.setBounds(
+                            componenteAtual.getX(),
+                            topoRelacionadoY,
+                            componenteAtual.getPreferredSize().width,
+                            componenteAtual.getPreferredSize().height
+                    );
+                } else if (parametro.equals(Parametros.ABAIXO_DE)){
+                    Component componenteRelacionado = getComponentByName(valor, parent);
+                    int baseRelacionadoY = componenteRelacionado.getY() + componenteRelacionado.getHeight();
 
+                    componenteAtual.setBounds(
+                            componenteAtual.getX(),
+                            baseRelacionadoY,
+                            componenteAtual.getPreferredSize().width,
+                            componenteAtual.getPreferredSize().height
+                    );
+                } else if (parametro.equals(Parametros.ESQUERDA_DE)){
+                    Component componenteRelacionado = getComponentByName(valor, parent);
+                    int esquerdaRelacionadoX = componenteRelacionado.getX() - componenteAtual.getWidth();
 
+                    componenteAtual.setBounds(
+                            esquerdaRelacionadoX,
+                            componenteAtual.getY(),
+                            componenteAtual.getPreferredSize().width,
+                            componenteAtual.getPreferredSize().height
+                    );
+                } else if (parametro.equals(Parametros.DIREITA_DE)){
+                    Component componenteRelacionado = getComponentByName(valor, parent);
+                    int direitaRelacionadoX = componenteRelacionado.getX() + componenteRelacionado.getWidth();
 
-
-
-
-
-                else if (parametro.equals(Parametros.GAP_TOPO)){
+                    componenteAtual.setBounds(
+                            direitaRelacionadoX,
+                            componenteAtual.getY(),
+                            componenteAtual.getPreferredSize().width,
+                            componenteAtual.getPreferredSize().height
+                    );
+                } else if (parametro.equals(Parametros.GAP_TOPO)){
                     int gap = Integer.parseInt(valor);
                     if (gap < 0){
                         throw new IllegalArgumentException("O valor de GAP ao topo repassado para o componente " +
@@ -538,6 +518,27 @@ public class RelativeLayout implements LayoutManager {
                         minWidth);
                 minHeight = preferredHeight;
             }
+        }
+    }
+
+    /**
+     * Esse metodo altera o comando do componente especificado fazendo com que, assim
+     * o componente em questao seja reposicionado.
+     *
+     * Apos a alteracao do comando e feita uma chamada do metodo {@code layoutContainer()},
+     * o que faz com que o container repassado no parametro seja totalmente atualizado.
+     *
+     * @param compName o nome do componente a ter seu comando alterado
+     * @param comando o novo comando a ser definido
+     * @param container o conteiner que contem o componente especificado
+     */
+    public void alterarComandoDeComponente(String compName, String comando, Container container){
+        if (mapa.containsKey(compName)){
+            mapa.get(compName).comandoCompleto = comando;
+            this.layoutContainer(container);
+        } else {
+            throw new IllegalArgumentException("O comando não pode ser alterado pois o componente " +
+                    "de nome [" + compName + "] não existe!");
         }
     }
 

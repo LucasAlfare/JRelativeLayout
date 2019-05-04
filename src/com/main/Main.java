@@ -2,15 +2,14 @@ package com.main;
 
 import javax.swing.*;
 
-import static com.main.RelativeLayout.Parametros.*;
-
 public class Main extends JFrame {
 
     public Main() {
         setSize(600, 600);
         setDefaultCloseOperation(3);
         setLocationRelativeTo(null);
-        setLayout(new RelativeLayout());
+        RelativeLayout rl = new RelativeLayout();
+        setLayout(rl);
 
         JButton a = new JButton("button a");
         a.setName("comp_a");
@@ -22,8 +21,9 @@ public class Main extends JFrame {
         JButton d = new JButton("button d");
         JButton e = new JButton("button e");
 
-        add(a, "centroHorizontal=true centroVertical=true");
-        //add(b, "coladoDireitaDe=comp_a");
+        add(a, "centroParent=true");
+
+        rl.alterarComandoDeComponente("comp_a", "topoParent=true", getContentPane());
 
         setVisible(true);
     }
