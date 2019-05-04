@@ -18,8 +18,8 @@ public class Main extends JFrame {
         JButton d = new JButton("button d");
         JButton e = new JButton("button e");
 
-        add(a, "oi");
-        add(b, "ok");
+        add(a, "parametro=kkk teste=");
+        add(b, "param=help oiamigo=hehehehe");
 
         setVisible(true);
     }

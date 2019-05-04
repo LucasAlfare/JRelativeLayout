@@ -82,12 +82,23 @@ public class RelativeLayout implements LayoutManager {
      * os componentes. Isso permitira que os comandos possam
      * ser acessados apenas utilizando o nome do componente.
      */
-    HashMap<String, ComponenteComando> mapa;
+    private HashMap<String, ComponenteComando> mapa;
+
     //Isso aqui eu so copiei, nem sei pra q serve.
     private int vgap;
     private int minWidth = 0, minHeight = 0;
     private int preferredWidth = 0, preferredHeight = 0;
     private boolean sizeUnknown = true;
+
+    public static final class Parametros {
+        public static final String ABAIXO_DE = "abaixoDe";
+        public static final String CENTRO_PARENT = "centroParent";
+    }
+
+    public static final class Valores {
+        public static final String TRUE = "true";
+        public static final String FALSE = "false";
+    }
 
     /**
      * Cria um RelativeLayout padrao.
@@ -237,10 +248,18 @@ public class RelativeLayout implements LayoutManager {
                  delas.
                  */
                 //verifica-se qual parametro foi definido pelo usuário
-                switch (paramentro.toLowerCase()) {
-                    case "...":
+                switch (paramentro) {
+                    case Parametros.CENTRO_PARENT:
+                        //Component componenteRelacionado = getComponentByName(valor, parent);
+
+                        if (valor.equals(Valores.TRUE)){
+                            //calcular a posicao do centro aqui
+                        } else {
+                            //definir uma posicao padrao caso n seja definido nada
+                        }
+
                         //verifica qual o valor do parametro definido pelo usuario
-                        switch (valor.toLowerCase()) {
+                        switch (valor) {
                             case ",,,":
                                 //TODO...
                                 break;
@@ -249,6 +268,16 @@ public class RelativeLayout implements LayoutManager {
                 }
             }
         }
+    }
+
+    private Component getComponentByName(String name, Container parent){
+        for (Component c : parent.getComponents()){
+            if (c.getName().equals(name)){
+                return c;
+            }
+        }
+
+        return null;
     }
 
     //Isso aqui eu so copiei, nem sei pra q serve.
@@ -295,10 +324,20 @@ public class RelativeLayout implements LayoutManager {
         public ArrayList<String> comandos() {
             String[] comandos = comandoCompleto.split(" ");
             ArrayList<String> comandosSeparados = new ArrayList<>();
+
             for (String s : comandos) {
-                comandosSeparados.add(s.split("=")[0]);
-                comandosSeparados.add(s.split("=")[1]);
+                String[] p = s.split("=");
+
+                if (p.length != 2){
+                    throw new IllegalArgumentException(
+                            "Algum comando de algum componente nao foi escrito no formato " +
+                                    "correto (comando=valor). Verifique e tente novamente.");
+                } else {
+                    comandosSeparados.add(s.split("=")[0]);
+                    comandosSeparados.add(s.split("=")[1]);
+                }
             }
+
             return comandosSeparados;
         }
 
