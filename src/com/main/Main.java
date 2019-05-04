@@ -13,16 +13,17 @@ public class Main extends JFrame {
         setLayout(new RelativeLayout());
 
         JButton a = new JButton("button a");
-        a.setName("comp a");
+        a.setName("comp_a");
 
         JButton b = new JButton("button b");
-        b.setName("comp b");
+        b.setName("comp_b");
 
         JButton c = new JButton("button c");
         JButton d = new JButton("button d");
         JButton e = new JButton("button e");
 
-        add(a, CENTRO_PARENT+"=true");
+        add(a, CENTRO_PARENT+"=false");
+        add(b, ABAIXO_DE+"=comp_a");
 
         setVisible(true);
     }

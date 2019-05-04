@@ -95,6 +95,9 @@ public class RelativeLayout implements LayoutManager {
     public static final class Parametros {
         public static final String ABAIXO_DE = "abaixoDe";
         public static final String CENTRO_PARENT = "centroParent";
+
+        public static final String GAP_X = "gapX";
+        public static final String GAP_Y = "gapY";
     }
 
     public static final class Valores {
@@ -268,7 +271,6 @@ public class RelativeLayout implements LayoutManager {
                         int compPosY = 0;
 
                         if (valor.equals(Valores.TRUE)){
-                            //calcular a posicao do centro aqui
                             int centroParentW = parent.getWidth() / 2;
                             int centroParentH = parent.getHeight() / 2;
 
@@ -282,7 +284,18 @@ public class RelativeLayout implements LayoutManager {
                                 componenteAtual.getPreferredSize().width,
                                 componenteAtual.getPreferredSize().height
                         );
-                        //
+
+                        break;
+                    case Parametros.ABAIXO_DE:
+                        Component componenteRelacionado = getComponentByName(valor, parent);
+                        int baseRelacionadoY = componenteRelacionado.getY() + componenteRelacionado.getHeight();
+
+                        componenteAtual.setBounds(
+                                componenteRelacionado.getX(),
+                                baseRelacionadoY,
+                                componenteAtual.getPreferredSize().width,
+                                componenteAtual.getPreferredSize().height
+                        );
 
                         break;
                 }
