@@ -1,5 +1,5 @@
 
-#A IDÉIA 
+# A IDÉIA 
  
  ESSA CLASSE TO FAZENDO PRA TESTAR UMA COISA SO...
  
@@ -39,7 +39,7 @@
  e estou adicionado, entao, minhas proprias implementacoes baseando-me
  na minha experiencia de uso do RelativeLayout original do Android.
  
-#PERSPECTIVA PARA A FORMA DE USAR
+# PERSPECTIVA PARA A FORMA DE USAR
  
  Eu planejo fazer forma de utilizacao desse gerenciador ser bem simples,
  onde o usuario devera, basicamente, ao adicionar o componente X a um
