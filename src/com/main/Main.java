@@ -22,8 +22,8 @@ public class Main extends JFrame {
         JButton d = new JButton("button d");
         JButton e = new JButton("button e");
 
-        add(a, CENTRO_PARENT+"=false");
-        add(b, ABAIXO_DE+"=comp_a");
+        add(a, "centroHorizontal=true centroVertical=true");
+        //add(b, "coladoDireitaDe=comp_a");
 
         setVisible(true);
     }
