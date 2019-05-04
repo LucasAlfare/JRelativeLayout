@@ -1,7 +1,6 @@
 package com.main;
 
 import java.awt.*;
-import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
@@ -126,11 +125,21 @@ public class RelativeLayout implements LayoutManager {
         public static final String GAP_BASE = "gapBase";
         public static final String GAP_DIREITA = "gapDireita";
         public static final String GAP_ESQUERDA = "gapEsquerda";
+
+        /**
+         * Esses parametros aceitam tanto valores numericos
+         * quanto valores "wrap" e "match"
+         */
+        public static final String LARGURA = "l";
+        public static final String ALTURA = "a";
     }
 
     public static final class Valores {
         public static final String TRUE = "true";
         public static final String FALSE = "false";
+
+        public static final String WRAP = "wrap";
+        public static final String MATCH = "match";
     }
 
     /**
@@ -319,7 +328,7 @@ public class RelativeLayout implements LayoutManager {
                 } else if (parametro.equals(Parametros.BASE_PARENT)){
                     if (valor.equals(Valores.TRUE)) {
                         componenteAtual.setBounds(
-                                0,
+                                componenteAtual.getX(),
                                 parent.getHeight() - componenteAtual.getHeight(),
                                 componenteAtual.getPreferredSize().width,
                                 componenteAtual.getPreferredSize().height
@@ -445,7 +454,39 @@ public class RelativeLayout implements LayoutManager {
                             componenteAtual.getPreferredSize().width,
                             componenteAtual.getPreferredSize().height
                     );
-                } else if (parametro.equals(Parametros.GAP_TOPO)){
+                } else if (parametro.equals(Parametros.ALTURA)) {
+                    int altura = -1;
+                    if (valor.equals(Valores.WRAP)) {
+                        altura = componenteAtual.getPreferredSize().height;
+                    } else if (valor.equals(Valores.MATCH)) {
+                        altura = parent.getHeight();
+                    } else {
+                        altura = Integer.parseInt(valor);
+                    }
+
+                    componenteAtual.setBounds(
+                            componenteAtual.getX(),
+                            componenteAtual.getY(),
+                            componenteAtual.getWidth(),
+                            altura
+                    );
+                } else if (parametro.equals(Parametros.LARGURA)) {
+                    int largura = -1;
+                    if (valor.equals(Valores.WRAP)) {
+                        largura = componenteAtual.getPreferredSize().width;
+                    } else if (valor.equals(Valores.MATCH)) {
+                        largura = parent.getWidth();
+                    } else {
+                        largura = Integer.parseInt(valor);
+                    }
+
+                    componenteAtual.setBounds(
+                            componenteAtual.getX(),
+                            componenteAtual.getY(),
+                            largura,
+                            componenteAtual.getHeight()
+                    );
+                } else if (parametro.equals(Parametros.GAP_TOPO)) {
                     int gap = Integer.parseInt(valor);
                     if (gap < 0){
                         throw new IllegalArgumentException("O valor de GAP ao topo repassado para o componente " +
