@@ -282,6 +282,7 @@ public class RelativeLayout implements LayoutManager {
                                 componenteAtual.getPreferredSize().width,
                                 componenteAtual.getPreferredSize().height
                         );
+                        //
 
                         break;
                 }
