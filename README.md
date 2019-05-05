@@ -5,9 +5,9 @@
  
  Assim, minha intencao e verificar se e possivel ter um gerenciador
  de layout no Swing que funcione de forma parecida com o proprio
- com.main.RelativeLayout, que e do Android.
+ com.main.JRelativeLayout, que e do Android.
  
- Minha motivacao pra isso e basicamente o fato de que o com.main.RelativeLayout
+ Minha motivacao pra isso e basicamente o fato de que o com.main.JRelativeLayout
  no Android e um gerenciador muito facil de se utilizar. Ou seja,
  podemos podemos layouts bem complexos apenas por codigo, sem mesmo
  utilizar a interface de construcao do AndroidStudio.
@@ -17,7 +17,7 @@
  gerenciadores bem conhecidos, como o MigLayout, o qual e o mais pratico
  que vi ate hoje.
  
- Entretanto, um gerenciador com a funcionalidade do com.main.RelativeLayout do
+ Entretanto, um gerenciador com a funcionalidade do com.main.JRelativeLayout do
  Android para Swing seria de grande ajuda para mim, visto que tenho
  muita dificuldade em construir telas.
  
@@ -37,7 +37,7 @@
  
  Diante disso, copiei alguns trechos que achei basicos para um gerenciador
  e estou adicionado, entao, minhas proprias implementacoes baseando-me
- na minha experiencia de uso do com.main.RelativeLayout original do Android.
+ na minha experiencia de uso do com.main.JRelativeLayout original do Android.
  
 # PERSPECTIVA PARA A FORMA DE USAR.
  

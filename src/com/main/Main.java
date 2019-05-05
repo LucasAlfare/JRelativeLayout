@@ -9,7 +9,7 @@ public class Main extends JFrame {
         setSize(200, 400);
         setDefaultCloseOperation(3);
         setLocationRelativeTo(null);
-        setLayout(new RelativeLayout());
+        setLayout(new JRelativeLayout());
 
         JLabel a = new JLabel("carregando scramble...");
         a.setName("scramble");
