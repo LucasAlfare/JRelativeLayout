@@ -132,13 +132,6 @@ public class JRelativeLayout implements LayoutManager {
          */
         public static final String WIDTH = "width";
         public static final String HEIGTH = "heigth";
-
-        /*
-         ==================================================
-        || AREA DE COMANDOS PARA MANIPULACAO DO COMPONENTE |
-         ==================================================
-        */
-
     }
 
     public static final class Valores {
