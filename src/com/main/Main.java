@@ -6,7 +6,7 @@ import javax.swing.*;
 public class Main extends JFrame {
 
     public Main() {
-        setSize(400, 400);
+        setSize(200, 400);
         setDefaultCloseOperation(3);
         setLocationRelativeTo(null);
         setLayout(new RelativeLayout());
@@ -28,7 +28,7 @@ public class Main extends JFrame {
 
         add(a, "centerHorizontal=true");
         add(b, "centerInParent=true");
-        add(c, "bellow=display width=matchParent");
+        add(c, "bellow=display centerHorizontal=true");
         add(d, "parentBottom=true");
         add(e, "parentBottom=true parentEnd=true");
 
