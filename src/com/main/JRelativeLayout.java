@@ -86,6 +86,13 @@ public class JRelativeLayout implements LayoutManager {
     private HashMap<String, ComponenteComando> mapa;
 
     public static final class Parametros {
+
+        /*
+         =============================================================
+        \| AREA DE COMANDOS PARA MANIPULACAO DA POSICAO DO COMPONENTE ||
+         =============================================================
+        */
+
         /**
          * Os paramentros abaixo aceitam valores true e false.
          */
@@ -125,6 +132,13 @@ public class JRelativeLayout implements LayoutManager {
          */
         public static final String WIDTH = "width";
         public static final String HEIGTH = "heigth";
+
+        /*
+         ==================================================
+        || AREA DE COMANDOS PARA MANIPULACAO DO COMPONENTE |
+         ==================================================
+        */
+
     }
 
     public static final class Valores {
@@ -174,7 +188,11 @@ public class JRelativeLayout implements LayoutManager {
     //TODO: implementar remocao do comandoCompleto respectivo do {@code mapa}.
     @Override
     public void removeLayoutComponent(Component comp) {
-
+        if (comp.getName().contains(" ")){
+            throw new IllegalArgumentException("O nome do componente + [" + comp.getName() + "] " +
+                    "contém espaços em branco. Por favor, remova os espaços e tente novamente.");
+        }
+        mapa.remove(comp.getName());
     }
 
     //Isso aqui eu so copiei, nem sei pra q serve.
@@ -254,6 +272,12 @@ public class JRelativeLayout implements LayoutManager {
                 //obtem-se o valor respectivo ao parametro atual
                 String valor = comandos.get(j + 1);
 
+                int
+                        x = compAtual.getX(),
+                        y = compAtual.getY(),
+                        w = compAtual.getPreferredSize().width,
+                        h = compAtual.getPreferredSize().height;
+
                 /**
                  Estrutura de ifs aninhados permite a correta identificacao
                  dos comandos, bem como dos valores que podem ser atribuidos
@@ -266,195 +290,77 @@ public class JRelativeLayout implements LayoutManager {
                  delas.
                  */
                 if (parametro.equals(Parametros.CENTER_IN_PARENT)){
-                    int compPosX = 0;
-                    int compPosY = 0;
-
                     if (valor.equals(Valores.TRUE)){
                         int centroParentW = parent.getWidth() / 2;
                         int centroParentH = parent.getHeight() / 2;
 
-                        compPosX = centroParentW - (compAtual.getWidth() / 2);
-                        compPosY = centroParentH - (compAtual.getHeight() / 2);
+                        x = centroParentW - (compAtual.getWidth() / 2);
+                        y = centroParentH - (compAtual.getHeight() / 2);
                     }
-
-                    compAtual.setBounds(
-                            compPosX,
-                            compPosY,
-                            compAtual.getPreferredSize().width,
-                            compAtual.getPreferredSize().height
-                    );
                 } else if (parametro.equals(Parametros.PARENT_TOP)){
                     if (valor.equals(Valores.TRUE)){
-                        compAtual.setBounds(
-                                compAtual.getX(),
-                                0,
-                                compAtual.getPreferredSize().width,
-                                compAtual.getPreferredSize().height
-                        );
+                        y = 0;
                     }
                 } else if (parametro.equals(Parametros.PARENT_BOTTOM)){
                     if (valor.equals(Valores.TRUE)) {
-                        compAtual.setBounds(
-                                compAtual.getX(),
-                                parent.getHeight() - compAtual.getHeight(),
-                                compAtual.getPreferredSize().width,
-                                compAtual.getPreferredSize().height
-                        );
+                        y = parent.getHeight() - compAtual.getHeight();
                     }
                 } else if (parametro.equals(Parametros.PARENT_START)){
                     if (valor.equals(Valores.TRUE)) {
-                        compAtual.setBounds(
-                                0,
-                                compAtual.getY(),
-                                compAtual.getPreferredSize().width,
-                                compAtual.getPreferredSize().height
-                        );
+                        x = 0;
                     }
                 } else if (parametro.equals(Parametros.PARENT_END)){
                     if (valor.equals(Valores.TRUE)) {
-                        compAtual.setBounds(
-                                parent.getWidth() - compAtual.getWidth(),
-                                compAtual.getY(),
-                                compAtual.getPreferredSize().width,
-                                compAtual.getPreferredSize().height
-                        );
+                        x = parent.getWidth() - compAtual.getWidth();
                     }
                 } else if(parametro.equals(Parametros.CENTER_VERTICAL)){
                     if (valor.equals(Valores.TRUE)){
-                        int centroVerticalParentY = parent.getHeight() / 2;
-
-                        compAtual.setBounds(
-                                compAtual.getX(),
-                                centroVerticalParentY - (compAtual.getHeight() / 2),
-                                compAtual.getPreferredSize().width,
-                                compAtual.getPreferredSize().height
-                        );
+                        y = (parent.getHeight() / 2) - (compAtual.getHeight() / 2);
                     }
                 } else if (parametro.equals(Parametros.CENTER_HORIZONTAL)){
                     if (valor.equals(Valores.TRUE)){
-                        int centroVerticalParentX = parent.getWidth() / 2;
-
-                        compAtual.setBounds(
-                                centroVerticalParentX - (compAtual.getWidth() / 2),
-                                compAtual.getY(),
-                                compAtual.getPreferredSize().width,
-                                compAtual.getPreferredSize().height
-                        );
+                        x = (parent.getWidth() / 2) - (compAtual.getWidth() / 2);
                     }
                 } else if (parametro.equals(Parametros.START)){
                     Component compRelacionado = getComponentByName(valor, parent);
-
-                    compAtual.setBounds(
-                            compRelacionado.getX(),
-                            compAtual.getY(),
-                            compAtual.getPreferredSize().width,
-                            compAtual.getPreferredSize().height
-                    );
+                    x = compRelacionado.getX();
                 } else if (parametro.equals(Parametros.TOP)){
                     Component compRelacionado = getComponentByName(valor, parent);
-
-                    compAtual.setBounds(
-                            compAtual.getX(),
-                            compRelacionado.getY(),
-                            compAtual.getPreferredSize().width,
-                            compAtual.getPreferredSize().height
-                    );
+                    y = compRelacionado.getY();
                 } else if(parametro.equals(Parametros.END)){
                     Component cmpRelacionado = getComponentByName(valor, parent);
-                    int direitaDireita =
-                            cmpRelacionado.getX() +
-                                    (Math.abs(compAtual.getWidth() - cmpRelacionado.getWidth()));
-
-                    compAtual.setBounds(
-                            direitaDireita,
-                            compAtual.getY(),
-                            compAtual.getPreferredSize().width,
-                            compAtual.getPreferredSize().height
-                    );
+                    x = cmpRelacionado.getX() + (Math.abs(compAtual.getWidth() - cmpRelacionado.getWidth()));
                 } else if(parametro.equals(Parametros.BOTTOM)){
                     Component compRelacionado = getComponentByName(valor, parent);
-                    int baseBase =
-                            (compRelacionado.getY() + compRelacionado.getHeight()) -
-                            compAtual.getHeight();
-
-                    compAtual.setBounds(
-                            compAtual.getX(),
-                            baseBase,
-                            compAtual.getPreferredSize().width,
-                            compAtual.getPreferredSize().height
-                    );
+                    y = (compRelacionado.getY() + compRelacionado.getHeight()) - compAtual.getHeight();
                 } else if (parametro.equals(Parametros.ABOVE)){
                     Component compRelacionado = getComponentByName(valor, parent);
-                    int baseTopo = compRelacionado.getY() - compAtual.getHeight();
-
-                    compAtual.setBounds(
-                            compAtual.getX(),
-                            baseTopo,
-                            compAtual.getPreferredSize().width,
-                            compAtual.getPreferredSize().height
-                    );
+                    x = compRelacionado.getY() - compAtual.getHeight();
                 } else if (parametro.equals(Parametros.BELLOW)){
                     Component compRelacionado = getComponentByName(valor, parent);
-                    int topoBase = compRelacionado.getY() + compRelacionado.getHeight();
-
-                    compAtual.setBounds(
-                            compAtual.getX(),
-                            topoBase,
-                            compAtual.getPreferredSize().width,
-                            compAtual.getPreferredSize().height
-                    );
+                    y = compRelacionado.getY() + compRelacionado.getHeight();
                 } else if (parametro.equals(Parametros.END_OF)){
                     Component compRelacionado = getComponentByName(valor, parent);
-                    int esquerdaDireita = compRelacionado.getX() + compRelacionado.getWidth();
-
-                    compAtual.setBounds(
-                            esquerdaDireita,
-                            compAtual.getY(),
-                            compAtual.getPreferredSize().width,
-                            compAtual.getPreferredSize().height
-                    );
+                    x = compRelacionado.getX() + compRelacionado.getWidth();
                 } else if (parametro.equals(Parametros.LEFT_OF)){
                     Component compRelacionado = getComponentByName(valor, parent);
-                    int direitaEsquerda = compRelacionado.getX() - compAtual.getWidth();
-
-                    compAtual.setBounds(
-                            direitaEsquerda,
-                            compAtual.getY(),
-                            compAtual.getPreferredSize().width,
-                            compAtual.getPreferredSize().height
-                    );
+                    x = compRelacionado.getX() - compAtual.getWidth();
                 } else if (parametro.equals(Parametros.HEIGTH)) {
-                    int altura = -1;
                     if (valor.equals(Valores.WRAP_CONTENT)) {
-                        altura = compAtual.getPreferredSize().height;
+                        h = compAtual.getPreferredSize().height;
                     } else if (valor.equals(Valores.MATCH_PARENT)) {
-                        altura = parent.getHeight();
+                        h = parent.getHeight();
                     } else {
-                        altura = Integer.parseInt(valor);
+                        h = Integer.parseInt(valor);
                     }
-
-                    compAtual.setBounds(
-                            compAtual.getX(),
-                            compAtual.getY(),
-                            compAtual.getPreferredSize().width,
-                            altura
-                    );
                 } else if (parametro.equals(Parametros.WIDTH)) {
-                    int largura;
                     if (valor.equals(Valores.WRAP_CONTENT)) {
-                        largura = compAtual.getPreferredSize().width;
+                        w = compAtual.getPreferredSize().width;
                     } else if (valor.equals(Valores.MATCH_PARENT)) {
-                        largura = parent.getWidth();
+                        w = parent.getWidth();
                     } else {
-                        largura = Integer.parseInt(valor);
+                        w = Integer.parseInt(valor);
                     }
-
-                    compAtual.setBounds(
-                            compAtual.getX(),
-                            compAtual.getY(),
-                            largura,
-                            compAtual.getPreferredSize().height
-                    );
                 } else if (parametro.equals(Parametros.MARGIN_TOP)) {
                     //TODO
                 } else if (parametro.equals(Parametros.MARGIN_BOTTOM)){
@@ -464,6 +370,10 @@ public class JRelativeLayout implements LayoutManager {
                 } else if (parametro.equals(Parametros.MARGIN_START)){
                     //TODO
                 }
+
+                //TODO: incluir manipulação do componente
+
+                compAtual.setBounds(x, y, w, h);
             }
         }
     }
