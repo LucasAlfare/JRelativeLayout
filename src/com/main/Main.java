@@ -6,31 +6,31 @@ import javax.swing.*;
 public class Main extends JFrame {
 
     public Main() {
-        setSize(200, 400);
+        setSize(400, 400);
         setDefaultCloseOperation(3);
         setLocationRelativeTo(null);
         setLayout(new RelativeLayout());
 
-        JButton a = new JButton("button a");
-        a.setName("comp_a");
+        JLabel a = new JLabel("carregando scramble...");
+        a.setName("scramble");
 
-        JButton b = new JButton("button b");
-        b.setName("comp_b");
+        JLabel b = new JLabel("00:00.000");
+        b.setName("display");
 
-        JButton c = new JButton("button c");
-        c.setName("comp_c");
+        JCheckBox c = new JCheckBox("USE inspection");
+        c.setName("insp");
 
-        JButton d = new JButton("button d");
-        d.setName("comp_d");
+        JButton d = new JButton("Statistics");
+        d.setName("stats");
 
-        JButton e = new JButton("button e");
-        e.setName("comp_e");
+        JButton e = new JButton("Solves");
+        e.setName("solves");
 
-        add(a, "centroParent=true topoParent=true");
-        add(b, "centroParent=true");
-        add(c, "abaixoDe=comp_b l=match");
-        add(d, "esquerdaParent=true baseParent=true");
-        add(e, "direitaParent=true baseParent=true");
+        add(a, "centerHorizontal=true");
+        add(b, "centerInParent=true");
+        add(c, "bellow=display width=matchParent");
+        add(d, "parentBottom=true");
+        add(e, "parentBottom=true parentEnd=true");
 
         setVisible(true);
     }

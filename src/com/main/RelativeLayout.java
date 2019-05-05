@@ -73,9 +73,8 @@ import java.util.Objects;
  * conteiner.add(bt1, "alinharNoTopo=true alinharAbaixoDe=botao3");
  * }
  * 
- * TODO: criar enumeracao publica e estatica aqui para guardar todos os parametros e valores
+ * TODO: implementar manipulação básica nos componentes em si
  */
-@SuppressWarnings("ALL")
 public class RelativeLayout implements LayoutManager {
 
     /**
@@ -86,60 +85,54 @@ public class RelativeLayout implements LayoutManager {
      */
     private HashMap<String, ComponenteComando> mapa;
 
-    //Isso aqui eu so copiei, nem sei pra q serve.
-    private int vgap;
-    private int minWidth = 0, minHeight = 0;
-    private int preferredWidth = 0, preferredHeight = 0;
-    private boolean sizeUnknown = true;
-
     public static final class Parametros {
         /**
          * Os paramentros abaixo aceitam valores true e false.
          */
-        public static final String CENTRO_PARENT = "center";//centroParent
-        public static final String TOPO_PARENT = "parentTop";//topoParent
-        public static final String BASE_PARENT = "parentBotton";//baseParent
-        public static final String ESQUERDA_PARENT = "parentLeft";//esquerdaParent
-        public static final String DIREITA_PARENT = "parentRight";//direitaParent
+        public static final String CENTER_IN_PARENT = "centerInParent";//centroParent
+        public static final String PARENT_TOP = "parentTop";//topoParent
+        public static final String PARENT_BOTTOM = "parentBottom";//baseParent
+        public static final String PARENT_START = "parentStart";//esquerdaParent
+        public static final String PARENT_END = "parentEnd";//direitaParent
 
-        public static final String CENTRO_VERTICAL = "centerVertical";//centroVertical
-        public static final String CENTRO_HORIZONTAL = "centerHorizontal";//centroHorizontal
+        public static final String CENTER_VERTICAL = "centerVertical";//centroVertical
+        public static final String CENTER_HORIZONTAL = "centerHorizontal";//centroHorizontal
 
         /**
          * Os valores abaixo aceitam valores de nomes de componentes.
          */
-        public static final String COLADO_ACIMA_DE = "topLine";//coladoAcimaDe
-        public static final String COLADO_ABAIXO_DE = "baseLine";//coladoAbaixoDe
-        public static final String COLADO_ESQUERDA_DE = "leftLine";//coladoEsquerdaDe
-        public static final String COLADO_DIREITA_DE = "rightLine";//coladoDireitaDe
+        public static final String START = "start";//esquerda com esquerda
+        public static final String END = "end";//direita com direita
+        public static final String TOP = "top";//topo com topo
+        public static final String BOTTOM = "bottom";//base com base
 
-        public static final String ACIMA_DE = "top";//acimaDe
-        public static final String ABAIXO_DE = "bellow";//abaixoDe
-        public static final String ESQUERDA_DE = "left";//esquerdaDe
-        public static final String DIREITA_DE = "right";//direitaDe
+        public static final String ABOVE = "above";//base com topo
+        public static final String BELLOW = "bellow";//topo com base
+        public static final String END_OF = "endOf";//esquerda com direita
+        public static final String LEFT_OF = "leftOf";//direita com esquerda
 
         /**
          * Os valores abaixo aceitam valores numericos.
          */
-        public static final String GAP_TOPO = "gapTopo";
-        public static final String GAP_BASE = "gapBase";
-        public static final String GAP_DIREITA = "gapDireita";
-        public static final String GAP_ESQUERDA = "gapEsquerda";
+        public static final String MARGIN_TOP = "marginTop";
+        public static final String MARGIN_BOTTOM = "marginBottom";
+        public static final String MARGIN_END = "marginEnd";
+        public static final String MARGIN_START = "marginStart";
 
         /**
          * Esses parametros aceitam tanto valores numericos
          * quanto valores "wrap" e "match"
          */
-        public static final String LARGURA = "l";
-        public static final String ALTURA = "a";
+        public static final String WIDTH = "width";
+        public static final String HEIGTH = "heigth";
     }
 
     public static final class Valores {
         public static final String TRUE = "true";
         public static final String FALSE = "false";
 
-        public static final String WRAP = "wrap";
-        public static final String MATCH = "match";
+        public static final String WRAP_CONTENT = "wrapContent";
+        public static final String MATCH_PARENT = "matchParent";
     }
 
     /**
@@ -187,37 +180,13 @@ public class RelativeLayout implements LayoutManager {
     //Isso aqui eu so copiei, nem sei pra q serve.
     @Override
     public Dimension preferredLayoutSize(Container parent) {
-        Dimension dim = new Dimension(0, 0);
-        int nComps = parent.getComponentCount();
-
-        setSizes(parent);
-
-        //Always add the container's insets!
-        Insets insets = parent.getInsets();
-        dim.width = preferredWidth + insets.left + insets.right;
-        dim.height = preferredHeight + insets.top + insets.bottom;
-
-        sizeUnknown = false;
-
-        return dim;
-        //return parent.getSize();
+        return parent.getSize();
     }
 
     //Isso aqui eu so copiei, nem sei pra q serve.
     @Override
     public Dimension minimumLayoutSize(Container parent) {
-        Dimension dim = new Dimension(0, 0);
-        int nComps = parent.getComponentCount();
-
-        //Always add the container's insets!
-        Insets insets = parent.getInsets();
-        dim.width = minWidth + insets.left + insets.right;
-        dim.height = minHeight + insets.top + insets.bottom;
-
-        sizeUnknown = false;
-
-        return dim;
-        //return parent.getSize();
+        return parent.getSize();
     }
 
     /**
@@ -240,14 +209,14 @@ public class RelativeLayout implements LayoutManager {
         //itera sobre todos os componentes adicionados no conteiner.
         for (int i = 0; i < parent.getComponentCount(); i++) {
             //para cada componente...
-            Component componenteAtual = parent.getComponent(i);
+            Component compAtual = parent.getComponent(i);
 
-            if (Objects.isNull(componenteAtual.getName()) ||
-                    componenteAtual.getName() == null ||
-                    componenteAtual.getName().isEmpty()) {
+            if (Objects.isNull(compAtual.getName()) ||
+                    compAtual.getName() == null ||
+                    compAtual.getName().isEmpty()) {
                 try {
                     throw new IllegalAccessException("O componente [[" +
-                            componenteAtual.toString() +
+                            compAtual.toString() +
                             "]] NAO possui um NOME definido. Defina um nome para" +
                             " esse componente e tente novamente.");
                 } catch (IllegalAccessException e) {
@@ -266,7 +235,7 @@ public class RelativeLayout implements LayoutManager {
             durante a chamada do metodo {@code addLayoutComponent},
             subscrito nesta classe. Dessa forma.
              */
-            ComponenteComando componenteComandoAtual = mapa.get(componenteAtual.getName());
+            ComponenteComando componenteComandoAtual = mapa.get(compAtual.getName());
 
             ArrayList<String> comandos = componenteComandoAtual.comandos();
 
@@ -296,9 +265,7 @@ public class RelativeLayout implements LayoutManager {
                  ja que esperamos, certamente, que o usuario adicione uma
                  delas.
                  */
-                //verifica-se qual parametro foi definido pelo usuário
-
-                if (parametro.equals(Parametros.CENTRO_PARENT)){
+                if (parametro.equals(Parametros.CENTER_IN_PARENT)){
                     int compPosX = 0;
                     int compPosY = 0;
 
@@ -306,216 +273,196 @@ public class RelativeLayout implements LayoutManager {
                         int centroParentW = parent.getWidth() / 2;
                         int centroParentH = parent.getHeight() / 2;
 
-                        compPosX = centroParentW - (componenteAtual.getWidth() / 2);
-                        compPosY = centroParentH - (componenteAtual.getHeight() / 2);
+                        compPosX = centroParentW - (compAtual.getWidth() / 2);
+                        compPosY = centroParentH - (compAtual.getHeight() / 2);
                     }
 
-                    componenteAtual.setBounds(
+                    compAtual.setBounds(
                             compPosX,
                             compPosY,
-                            componenteAtual.getPreferredSize().width,
-                            componenteAtual.getPreferredSize().height
+                            compAtual.getPreferredSize().width,
+                            compAtual.getPreferredSize().height
                     );
-                } else if (parametro.equals(Parametros.TOPO_PARENT)){
+                } else if (parametro.equals(Parametros.PARENT_TOP)){
                     if (valor.equals(Valores.TRUE)){
-                        componenteAtual.setBounds(
-                                componenteAtual.getX(),
+                        compAtual.setBounds(
+                                compAtual.getX(),
                                 0,
-                                componenteAtual.getPreferredSize().width,
-                                componenteAtual.getPreferredSize().height
+                                compAtual.getPreferredSize().width,
+                                compAtual.getPreferredSize().height
                         );
                     }
-                } else if (parametro.equals(Parametros.BASE_PARENT)){
+                } else if (parametro.equals(Parametros.PARENT_BOTTOM)){
                     if (valor.equals(Valores.TRUE)) {
-                        componenteAtual.setBounds(
-                                componenteAtual.getX(),
-                                parent.getHeight() - componenteAtual.getHeight(),
-                                componenteAtual.getPreferredSize().width,
-                                componenteAtual.getPreferredSize().height
+                        compAtual.setBounds(
+                                compAtual.getX(),
+                                parent.getHeight() - compAtual.getHeight(),
+                                compAtual.getPreferredSize().width,
+                                compAtual.getPreferredSize().height
                         );
                     }
-                } else if (parametro.equals(Parametros.ESQUERDA_PARENT)){
+                } else if (parametro.equals(Parametros.PARENT_START)){
                     if (valor.equals(Valores.TRUE)) {
-                        componenteAtual.setBounds(
+                        compAtual.setBounds(
                                 0,
-                                componenteAtual.getY(),
-                                componenteAtual.getPreferredSize().width,
-                                componenteAtual.getPreferredSize().height
+                                compAtual.getY(),
+                                compAtual.getPreferredSize().width,
+                                compAtual.getPreferredSize().height
                         );
                     }
-                } else if (parametro.equals(Parametros.DIREITA_PARENT)){
+                } else if (parametro.equals(Parametros.PARENT_END)){
                     if (valor.equals(Valores.TRUE)) {
-                        componenteAtual.setBounds(
-                                parent.getWidth() - componenteAtual.getWidth(),
-                                componenteAtual.getY(),
-                                componenteAtual.getPreferredSize().width,
-                                componenteAtual.getPreferredSize().height
+                        compAtual.setBounds(
+                                parent.getWidth() - compAtual.getWidth(),
+                                compAtual.getY(),
+                                compAtual.getPreferredSize().width,
+                                compAtual.getPreferredSize().height
                         );
                     }
-                } else if(parametro.equals(Parametros.CENTRO_VERTICAL)){
+                } else if(parametro.equals(Parametros.CENTER_VERTICAL)){
                     if (valor.equals(Valores.TRUE)){
                         int centroVerticalParentY = parent.getHeight() / 2;
 
-                        componenteAtual.setBounds(
-                                componenteAtual.getX(),
-                                centroVerticalParentY - (componenteAtual.getHeight() / 2),
-                                componenteAtual.getPreferredSize().width,
-                                componenteAtual.getPreferredSize().height
+                        compAtual.setBounds(
+                                compAtual.getX(),
+                                centroVerticalParentY - (compAtual.getHeight() / 2),
+                                compAtual.getPreferredSize().width,
+                                compAtual.getPreferredSize().height
                         );
                     }
-                } else if (parametro.equals(Parametros.CENTRO_HORIZONTAL)){
+                } else if (parametro.equals(Parametros.CENTER_HORIZONTAL)){
                     if (valor.equals(Valores.TRUE)){
                         int centroVerticalParentX = parent.getWidth() / 2;
 
-                        componenteAtual.setBounds(
-                                centroVerticalParentX - (componenteAtual.getWidth() / 2),
-                                componenteAtual.getY(),
-                                componenteAtual.getPreferredSize().width,
-                                componenteAtual.getPreferredSize().height
+                        compAtual.setBounds(
+                                centroVerticalParentX - (compAtual.getWidth() / 2),
+                                compAtual.getY(),
+                                compAtual.getPreferredSize().width,
+                                compAtual.getPreferredSize().height
                         );
                     }
-                } else if (parametro.equals(Parametros.COLADO_ACIMA_DE)){
-                    Component componenteRelacionado = getComponentByName(valor, parent);
-                    int topoRelacionadoY = componenteRelacionado.getY() - componenteAtual.getHeight();
+                } else if (parametro.equals(Parametros.START)){
+                    Component compRelacionado = getComponentByName(valor, parent);
 
-                    componenteAtual.setBounds(
-                            componenteRelacionado.getX(),
-                            topoRelacionadoY,
-                            componenteAtual.getPreferredSize().width,
-                            componenteAtual.getPreferredSize().height
+                    compAtual.setBounds(
+                            compRelacionado.getX(),
+                            compAtual.getY(),
+                            compAtual.getPreferredSize().width,
+                            compAtual.getPreferredSize().height
                     );
-                } else if (parametro.equals(Parametros.COLADO_ABAIXO_DE)){
-                    Component componenteRelacionado = getComponentByName(valor, parent);
-                    int baseRelacionadoY = componenteRelacionado.getY() + componenteRelacionado.getHeight();
+                } else if (parametro.equals(Parametros.TOP)){
+                    Component compRelacionado = getComponentByName(valor, parent);
 
-                    componenteAtual.setBounds(
-                            componenteRelacionado.getX(),
-                            baseRelacionadoY,
-                            componenteAtual.getPreferredSize().width,
-                            componenteAtual.getPreferredSize().height
+                    compAtual.setBounds(
+                            compAtual.getX(),
+                            compRelacionado.getY(),
+                            compAtual.getPreferredSize().width,
+                            compAtual.getPreferredSize().height
                     );
-                } else if(parametro.equals(Parametros.COLADO_ESQUERDA_DE)){
-                    Component componenteRelacionado = getComponentByName(valor, parent);
-                    int esquerdaRelacionadoX = componenteRelacionado.getX() - componenteAtual.getWidth();
+                } else if(parametro.equals(Parametros.END)){
+                    Component cmpRelacionado = getComponentByName(valor, parent);
+                    int direitaDireita =
+                            cmpRelacionado.getX() +
+                                    (Math.abs(compAtual.getWidth() - cmpRelacionado.getWidth()));
 
-                    componenteAtual.setBounds(
-                            esquerdaRelacionadoX,
-                            componenteRelacionado.getY(),
-                            componenteAtual.getPreferredSize().width,
-                            componenteAtual.getPreferredSize().height
+                    compAtual.setBounds(
+                            direitaDireita,
+                            compAtual.getY(),
+                            compAtual.getPreferredSize().width,
+                            compAtual.getPreferredSize().height
                     );
-                } else if(parametro.equals(Parametros.COLADO_DIREITA_DE)){
-                    Component componenteRelacionado = getComponentByName(valor, parent);
-                    int direitaRelacionadoX = componenteRelacionado.getX() + componenteRelacionado.getWidth();
+                } else if(parametro.equals(Parametros.BOTTOM)){
+                    Component compRelacionado = getComponentByName(valor, parent);
+                    int baseBase =
+                            (compRelacionado.getY() + compRelacionado.getHeight()) -
+                            compAtual.getHeight();
 
-                    componenteAtual.setBounds(
-                            direitaRelacionadoX,
-                            componenteRelacionado.getY(),
-                            componenteAtual.getPreferredSize().width,
-                            componenteAtual.getPreferredSize().height
+                    compAtual.setBounds(
+                            compAtual.getX(),
+                            baseBase,
+                            compAtual.getPreferredSize().width,
+                            compAtual.getPreferredSize().height
                     );
-                } else if (parametro.equals(Parametros.ACIMA_DE)){
-                    Component componenteRelacionado = getComponentByName(valor, parent);
-                    int topoRelacionadoY = componenteRelacionado.getY() - componenteAtual.getHeight();
+                } else if (parametro.equals(Parametros.ABOVE)){
+                    Component compRelacionado = getComponentByName(valor, parent);
+                    int baseTopo = compRelacionado.getY() - compAtual.getHeight();
 
-                    componenteAtual.setBounds(
-                            componenteAtual.getX(),
-                            topoRelacionadoY,
-                            componenteAtual.getPreferredSize().width,
-                            componenteAtual.getPreferredSize().height
+                    compAtual.setBounds(
+                            compAtual.getX(),
+                            baseTopo,
+                            compAtual.getPreferredSize().width,
+                            compAtual.getPreferredSize().height
                     );
-                } else if (parametro.equals(Parametros.ABAIXO_DE)){
-                    Component componenteRelacionado = getComponentByName(valor, parent);
-                    int baseRelacionadoY = componenteRelacionado.getY() + componenteRelacionado.getHeight();
+                } else if (parametro.equals(Parametros.BELLOW)){
+                    Component compRelacionado = getComponentByName(valor, parent);
+                    int topoBase = compRelacionado.getY() + compRelacionado.getHeight();
 
-                    componenteAtual.setBounds(
-                            componenteAtual.getX(),
-                            baseRelacionadoY,
-                            componenteAtual.getPreferredSize().width,
-                            componenteAtual.getPreferredSize().height
+                    compAtual.setBounds(
+                            compAtual.getX(),
+                            topoBase,
+                            compAtual.getPreferredSize().width,
+                            compAtual.getPreferredSize().height
                     );
-                } else if (parametro.equals(Parametros.ESQUERDA_DE)){
-                    Component componenteRelacionado = getComponentByName(valor, parent);
-                    int esquerdaRelacionadoX = componenteRelacionado.getX() - componenteAtual.getWidth();
+                } else if (parametro.equals(Parametros.END_OF)){
+                    Component compRelacionado = getComponentByName(valor, parent);
+                    int esquerdaDireita = compRelacionado.getX() + compRelacionado.getWidth();
 
-                    componenteAtual.setBounds(
-                            esquerdaRelacionadoX,
-                            componenteAtual.getY(),
-                            componenteAtual.getPreferredSize().width,
-                            componenteAtual.getPreferredSize().height
+                    compAtual.setBounds(
+                            esquerdaDireita,
+                            compAtual.getY(),
+                            compAtual.getPreferredSize().width,
+                            compAtual.getPreferredSize().height
                     );
-                } else if (parametro.equals(Parametros.DIREITA_DE)){
-                    Component componenteRelacionado = getComponentByName(valor, parent);
-                    int direitaRelacionadoX = componenteRelacionado.getX() + componenteRelacionado.getWidth();
+                } else if (parametro.equals(Parametros.LEFT_OF)){
+                    Component compRelacionado = getComponentByName(valor, parent);
+                    int direitaEsquerda = compRelacionado.getX() - compAtual.getWidth();
 
-                    componenteAtual.setBounds(
-                            direitaRelacionadoX,
-                            componenteAtual.getY(),
-                            componenteAtual.getPreferredSize().width,
-                            componenteAtual.getPreferredSize().height
+                    compAtual.setBounds(
+                            direitaEsquerda,
+                            compAtual.getY(),
+                            compAtual.getPreferredSize().width,
+                            compAtual.getPreferredSize().height
                     );
-                } else if (parametro.equals(Parametros.ALTURA)) {
+                } else if (parametro.equals(Parametros.HEIGTH)) {
                     int altura = -1;
-                    if (valor.equals(Valores.WRAP)) {
-                        altura = componenteAtual.getPreferredSize().height;
-                    } else if (valor.equals(Valores.MATCH)) {
+                    if (valor.equals(Valores.WRAP_CONTENT)) {
+                        altura = compAtual.getPreferredSize().height;
+                    } else if (valor.equals(Valores.MATCH_PARENT)) {
                         altura = parent.getHeight();
                     } else {
                         altura = Integer.parseInt(valor);
                     }
 
-                    componenteAtual.setBounds(
-                            componenteAtual.getX(),
-                            componenteAtual.getY(),
-                            componenteAtual.getWidth(),
+                    compAtual.setBounds(
+                            compAtual.getX(),
+                            compAtual.getY(),
+                            compAtual.getPreferredSize().width,
                             altura
                     );
-                } else if (parametro.equals(Parametros.LARGURA)) {
-                    int largura = -1;
-                    if (valor.equals(Valores.WRAP)) {
-                        largura = componenteAtual.getPreferredSize().width;
-                    } else if (valor.equals(Valores.MATCH)) {
+                } else if (parametro.equals(Parametros.WIDTH)) {
+                    int largura;
+                    if (valor.equals(Valores.WRAP_CONTENT)) {
+                        largura = compAtual.getPreferredSize().width;
+                    } else if (valor.equals(Valores.MATCH_PARENT)) {
                         largura = parent.getWidth();
                     } else {
                         largura = Integer.parseInt(valor);
                     }
 
-                    componenteAtual.setBounds(
-                            componenteAtual.getX(),
-                            componenteAtual.getY(),
+                    compAtual.setBounds(
+                            compAtual.getX(),
+                            compAtual.getY(),
                             largura,
-                            componenteAtual.getHeight()
+                            compAtual.getPreferredSize().height
                     );
-                } else if (parametro.equals(Parametros.GAP_TOPO)) {
-                    int gap = Integer.parseInt(valor);
-                    if (gap < 0){
-                        throw new IllegalArgumentException("O valor de GAP ao topo repassado para o componente " +
-                                componenteAtual.getName() + " deve ser >= 0.");
-                    }
-
-                    componenteAtual.setBounds(
-                            componenteAtual.getX(),
-                            componenteAtual.getY() + gap,
-                            componenteAtual.getPreferredSize().width,
-                            componenteAtual.getPreferredSize().height
-                    );
-                } else if (parametro.equals(Parametros.GAP_BASE)){
+                } else if (parametro.equals(Parametros.MARGIN_TOP)) {
                     //TODO
-                } else if (parametro.equals(Parametros.GAP_DIREITA)){
+                } else if (parametro.equals(Parametros.MARGIN_BOTTOM)){
                     //TODO
-                } else if (parametro.equals(Parametros.GAP_ESQUERDA)){
-                    int gap = Integer.parseInt(valor);
-                    if (gap < 0){
-                        throw new IllegalArgumentException("O valor de GAP à esquerda repassado para o componente " +
-                                componenteAtual.getName() + " deve ser >= 0.");
-                    }
-
-                    componenteAtual.setBounds(
-                            componenteAtual.getX() + gap,
-                            componenteAtual.getY(),
-                            componenteAtual.getPreferredSize().width,
-                            componenteAtual.getPreferredSize().height
-                    );
+                } else if (parametro.equals(Parametros.MARGIN_END)){
+                    //TODO
+                } else if (parametro.equals(Parametros.MARGIN_START)){
+                    //TODO
                 }
             }
         }
@@ -529,37 +476,6 @@ public class RelativeLayout implements LayoutManager {
         }
 
         return null;
-    }
-
-    //Isso aqui eu so copiei, nem sei pra q serve.
-    private void setSizes(Container parent) {
-        int nComps = parent.getComponentCount();
-        Dimension d = null;
-
-        //Reset preferred/minimum width and height.
-        preferredWidth = 0;
-        preferredHeight = 0;
-        minWidth = 0;
-        minHeight = 0;
-
-        for (int i = 0; i < nComps; i++) {
-            Component c = parent.getComponent(i);
-            if (c.isVisible()) {
-                d = c.getPreferredSize();
-
-                if (i > 0) {
-                    preferredWidth += d.width/2;
-                    preferredHeight += vgap;
-                } else {
-                    preferredWidth = d.width;
-                }
-                preferredHeight += d.height;
-
-                minWidth = Math.max(c.getMinimumSize().width,
-                        minWidth);
-                minHeight = preferredHeight;
-            }
-        }
     }
 
     /**
