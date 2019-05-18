@@ -268,8 +268,8 @@ public class JRelativeLayout implements LayoutManager {
                 int
                         x = compAtual.getX(),
                         y = compAtual.getY(),
-                        w = compAtual.getPreferredSize().width,
-                        h = compAtual.getPreferredSize().height;
+                        w = compAtual.getSize().width,
+                        h = compAtual.getSize().height;
 
                 /**
                  Estrutura de ifs aninhados permite a correta identificacao
