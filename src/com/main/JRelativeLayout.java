@@ -373,8 +373,6 @@ public class JRelativeLayout implements LayoutManager {
                     //TODO
                 }
 
-                String kkk = compAtual.getName();
-
                 //TODO: incluir manipulação do componente
                 compAtual.setBounds(x, y, w, h);
             }
