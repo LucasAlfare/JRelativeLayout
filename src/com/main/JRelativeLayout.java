@@ -7,72 +7,72 @@ import java.util.Objects;
 
 /**
  * ESSA CLASSE TO FAZENDO PRA TESTAR UMA COISA SO...
- * 
+ *
  * Assim, minha intencao e verificar se e possivel ter um gerenciador
  * de layout no Swing que funcione de forma parecida com o proprio
  * com.main.JRelativeLayout, que e do Android.
- * 
+ *
  * Minha motivacao pra isso e basicamente o fato de que o com.main.JRelativeLayout
  * no Android e um gerenciador muito facil de se utilizar. Ou seja,
  * podemos podemos layouts bem complexos apenas por codigo, sem mesmo
  * utilizar a interface de construcao do AndroidStudio.
- * 
+ *
  * E fato que ja ha outros gerenciadores de layout no proprio Swing
  * que funcionam bem nesse ponto, como o GridBagLayout. Ha tambem
  * gerenciadores bem conhecidos, como o MigLayout, o qual e o mais pratico
  * que vi ate hoje.
- * 
+ *
  * Entretanto, um gerenciador com a funcionalidade do com.main.JRelativeLayout do
  * Android para Swing seria de grande ajuda para mim, visto que tenho
  * muita dificuldade em construir telas.
- * 
+ *
  * Considerando o fato de esta classe vir a ser funcional algum dia
  * tambem e possivel almejar a possibilidade de ela ser util para outras pessoas
  * que venham a ter as mesmas dificuldades que eu. Assim, este projeto
  * de classe ficara guardado virtualmente no GitHub.
- * 
+ *
  * Para efeitos de estudo, e importante saber que comecei o desenvolvimento
  * disso baseado no exemplo de gerenciador de layout customizado feito
  * pela propria Oracle. Nesse exemplo que eles fizeram, alem da explicacao
  * eles disponibilizaram a fonte do gerenciador, que no caso trata-se
  * de um "com.main.DiagonalLayout", que alinha todos os itens de forma diagonal.
- * 
+ *
  * Aqui tem o link para a pagina do exemplo que to falando:
  * https://docs.oracle.com/javase/tutorial/uiswing/layout/custom.html
- * 
+ *
  * Diante disso, copiei alguns trechos que achei basicos para um gerenciador
  * e estou adicionado, entao, minhas proprias implementacoes baseando-me
  * na minha experiencia de uso do com.main.JRelativeLayout original do Android.
- * 
+ *
  * *------------------------------------------------------------------*
  * *------------------------------------------------------------------*
- * 
+ *
  * Eu planejo fazer forma de utilizacao desse gerenciador ser bem simples,
  * onde o usuario devera, basicamente, ao adicionar o componente X a um
  * conteiner, escrever todos os parametros que deseja, em um formato de String.
- * 
+ *
  * Por exemplo:
- * 
+ *
  * {@code conteiner.add(bt1, "alinharNoTopo=true alinharAbaixoDe=botao3")}
  * Obs.: possivelmente os parametros serao nomeados assim, mas ainda nao estao
  * definidos.
- * 
+ *
  * Alem disso, obrigatoriamente ANTES DE ADICONAR os componentes ao conteiner
  * o usuario devera definir a propriedade NOME de cada componente. Assim, um
  * trecho de codigo de utilizacao devera ser da seguinte forma:
- * 
+ *
  * {@code
  * JButton bt1 = new JButton();
  * bt1.setName("botao");
- * 
+ *
  * JButton bt3 = new JButton();
  * bt3.setName("botao3");
- * 
+ *
  * ...
- * 
+ *
  * conteiner.add(bt1, "alinharNoTopo=true alinharAbaixoDe=botao3");
  * }
- * 
+ *
  * TODO: implementar manipulação básica nos componentes em si
  */
 public class JRelativeLayout implements LayoutManager {
@@ -131,7 +131,7 @@ public class JRelativeLayout implements LayoutManager {
          * quanto valores "wrap" e "match"
          */
         public static final String WIDTH = "width";
-        public static final String HEIGTH = "heigth";
+        public static final String HEIGHT = "height";
     }
 
     public static final class Valores {
@@ -144,7 +144,7 @@ public class JRelativeLayout implements LayoutManager {
 
     /**
      * Cria um com.main.JRelativeLayout padrao.
-     * 
+     *
      * No momento n tem nenhuma outra forma de criar um
      * com.main.JRelativeLayout que nao seja essa. Tau.
      */
@@ -156,7 +156,7 @@ public class JRelativeLayout implements LayoutManager {
      * Esse metodo faz parte da interface LayoutManager e
      * aqui eu uso ele para obter as "constraints" de cada
      * componente.
-     * 
+     *
      * Vale esclarecer que essas "constraints" serao tratadas
      * como os comandos que o usuario ira definir para esse
      * componente em questao. Vale lembrar, tambem, que esse
@@ -204,11 +204,11 @@ public class JRelativeLayout implements LayoutManager {
      * Esse metodo aqui faz parte da interface LayoutManager e
      * e chamado sempre que os componentes sao desenhados no
      * conteirer.
-     * 
+     *
      * A idea desse metodo e basicamente "movimentar"/"posicionar"
      * esses componentes DENTRO do conteiner os quais estao
      * adicionados.
-     * 
+     *
      * Assim, fica a cargo deste metodo tratar todos os comandos
      * definidos pelo usuario, como tambem realizar tais movimentacoes
      * e posicionamentos.
@@ -265,13 +265,15 @@ public class JRelativeLayout implements LayoutManager {
                 //obtem-se o valor respectivo ao parametro atual
                 String valor = comandos.get(j + 1);
 
+                String kk = compAtual.getName();
+
                 int
                         x = compAtual.getX(),
                         y = compAtual.getY(),
                         w = compAtual.getSize().width,
                         h = compAtual.getSize().height;
 
-                /**
+                /*
                  Estrutura de ifs aninhados permite a correta identificacao
                  dos comandos, bem como dos valores que podem ser atribuidos
                  a cada.
@@ -338,11 +340,15 @@ public class JRelativeLayout implements LayoutManager {
                 } else if (parametro.equals(Parametros.LEFT_OF)){
                     Component compRelacionado = getComponentByName(valor, parent);
                     x = compRelacionado.getX() - compAtual.getWidth();
-                } else if (parametro.equals(Parametros.HEIGTH)) {
+                } else if (parametro.equals(Parametros.HEIGHT)) {
                     if (valor.equals(Valores.WRAP_CONTENT)) {
                         h = compAtual.getPreferredSize().height;
                     } else if (valor.equals(Valores.MATCH_PARENT)) {
                         h = parent.getHeight();
+                    } else if (valor.contains("%")) {
+                        System.out.println("kkkk");
+                        double n = Integer.parseInt(valor.replace("%", ""));
+                        h = (int) ((n / 100) * parent.getHeight());
                     } else {
                         h = Integer.parseInt(valor);
                     }
@@ -351,6 +357,9 @@ public class JRelativeLayout implements LayoutManager {
                         w = compAtual.getPreferredSize().width;
                     } else if (valor.equals(Valores.MATCH_PARENT)) {
                         w = parent.getWidth();
+                    } else if (valor.contains("%")) {
+                        double n = Integer.parseInt(valor.replace("%", ""));
+                        w = (int) ((n / 100) * parent.getWidth());
                     } else {
                         w = Integer.parseInt(valor);
                     }
@@ -364,8 +373,9 @@ public class JRelativeLayout implements LayoutManager {
                     //TODO
                 }
 
-                //TODO: incluir manipulação do componente
+                String kkk = compAtual.getName();
 
+                //TODO: incluir manipulação do componente
                 compAtual.setBounds(x, y, w, h);
             }
         }
