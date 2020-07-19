@@ -2,35 +2,46 @@ package com.main;
 
 import javax.swing.*;
 
-@SuppressWarnings("WeakerAccess")
 public class Main extends JFrame {
 
     public Main() {
-        setSize(200, 400);
+        setSize(400, 400);
         setDefaultCloseOperation(3);
         setLocationRelativeTo(null);
-        setLayout(new JRelativeLayout());
+        RelativeLayout layout = new RelativeLayout();
+        setLayout(layout);
 
-        JLabel a = new JLabel("carregando scramble...");
-        a.setName("scramble");
+        RelativeLayoutConstraints constraints = new RelativeLayoutConstraints();
 
-        JLabel b = new JLabel("00:00.000");
-        b.setName("display");
+        JButton a = new JButton("a");
+        JButton b = new JButton("b");
+        JButton c = new JButton("c");
+        JButton d = new JButton("d");
+        JButton e = new JButton("e");
 
-        JCheckBox c = new JCheckBox("USE inspection");
-        c.setName("insp");
+        constraints.parentTop = true;
+        constraints.centerHorizontal = true;
+        add(a, constraints);
+        constraints = new RelativeLayoutConstraints();
 
-        JButton d = new JButton("Statistics");
-        d.setName("stats");
+        constraints.centerHorizontal = true;
+        constraints.centerVertical = true;
+        add(b, constraints);
+        constraints = new RelativeLayoutConstraints();
 
-        JButton e = new JButton("Solves");
-        e.setName("solves");
+        constraints.parentStart = true;
+        constraints.parentBottom = true;
+        add(c, constraints);
+        constraints = new RelativeLayoutConstraints();
 
-        add(a, "centerHorizontal=true");
-        add(b, "centerInParent=true");
-        add(c, "bellow=display centerHorizontal=true");
-        add(d, "parentBottom=true");
-        add(e, "parentBottom=true parentEnd=true");
+        constraints.parentBottom = true;
+        constraints.endOf = c;
+        add(d, constraints);
+        constraints = new RelativeLayoutConstraints();
+
+        constraints.parentEnd = true;
+        constraints.parentBottom = true;
+        add(e, constraints);
 
         setVisible(true);
     }
