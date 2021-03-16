@@ -2,7 +2,7 @@ package com.main;
 
 import java.awt.*;
 
-public class RelativeLayoutConstraints {
+public class JRelativeLayoutConstraints {
 
     public boolean
             centerInParent,
@@ -29,8 +29,32 @@ public class RelativeLayoutConstraints {
             marginEnd,
             marginStart;
 
-    public RelativeLayoutConstraints copyOf(RelativeLayoutConstraints constraints) {
-        RelativeLayoutConstraints ret = new RelativeLayoutConstraints();
+    public void resetFields() {
+        centerInParent = false;
+        parentTop = false;
+        parentBottom = false;
+        parentStart = false;
+        parentEnd = false;
+        centerVertical = false;
+        centerHorizontal = false;
+
+        start = null;
+        end = null;
+        top = null;
+        bottom = null;
+        above = null;
+        bellow = null;
+        endOf = null;
+        leftOf = null;
+
+        marginTop = 0;
+        marginBottom = 0;
+        marginEnd = 0;
+        marginStart = 0;
+    }
+
+    public JRelativeLayoutConstraints newInstance() {
+        JRelativeLayoutConstraints ret = new JRelativeLayoutConstraints();
         ret.centerInParent = centerInParent;
         ret.parentTop = parentTop;
         ret.parentBottom = parentBottom;
@@ -52,6 +76,7 @@ public class RelativeLayoutConstraints {
         ret.marginEnd = marginEnd;
         ret.marginStart = marginStart;
 
+        resetFields();
         return ret;
     }
 }
