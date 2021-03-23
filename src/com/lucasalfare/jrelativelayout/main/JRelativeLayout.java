@@ -39,11 +39,15 @@ public class JRelativeLayout implements LayoutManager2 {
      */
     @Override
     public void addLayoutComponent(Component comp, Object constraints) {
-        if (constraints instanceof Constraints) {
-            table.put(comp, (Constraints) constraints);
+        if (constraints != null) {
+            if (constraints instanceof Constraints) {
+                table.put(comp, (Constraints) constraints);
+            } else {
+                throw new IllegalArgumentException(
+                        "Unable to add some components to this layout with the supplied constraints.");
+            }
         } else {
-            throw new IllegalArgumentException(
-                    "Unable to add some components to this layout with the supplied constraints.");
+            table.put(comp, rawConstraints());
         }
     }
 
