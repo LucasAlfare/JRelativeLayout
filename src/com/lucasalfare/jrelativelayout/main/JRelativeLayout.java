@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.HashMap;
 
 /**
- * Layout manager that lay the components relatively to each other.
+ * Layout manager that lays the components relatively to each other.
  */
 public class JRelativeLayout implements LayoutManager2 {
 
