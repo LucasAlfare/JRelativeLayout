@@ -53,6 +53,16 @@ public class JRelativeLayout implements LayoutManager2 {
 
     /**
      * Performs all the calculations for all the components that was added in the {@code parent} container based in the defined constraints for each of then.
+     * <p>
+     * Is important to know that laying will happen in the following order:
+     * <p>
+     * - First are handled all sizing constraints;
+     * <p>
+     * - Second are handled all positioning constraints;
+     * <p>
+     * - Last are handled all numeric position constraints that affects previous positioning (e.g. margins/paddings).
+     * <p>
+     * Finally, after positioning the components, the algorithm attempts to fix the component size if it was turned out of bounds from its parent.
      *
      * @param parent The root container that has a {@link JRelativeLayout} manager working.
      */
@@ -63,6 +73,26 @@ public class JRelativeLayout implements LayoutManager2 {
                 final Constraints constraints = table.get(component);
                 if (constraints != null) {
                     int x = component.getX(), y = component.getY(), width = component.getPreferredSize().width, height = component.getPreferredSize().height;
+                    boolean isWidthSet = false, isHeightSet = false;
+
+                    // handles sizing constraints
+                    if (constraints.percentileWidth >= 0D) {
+                        if (constraints.percentileWidth == Constraints.MATCH_PARENT) {
+                            width = parent.getWidth();
+                        } else {
+                            width = (int) (parent.getWidth() * constraints.percentileWidth / 100D);
+                        }
+                        isWidthSet = true;
+                    }
+
+                    if (constraints.percentileHeight >= 0D) {
+                        if (constraints.percentileHeight == Constraints.MATCH_PARENT) {
+                            height = parent.getHeight();
+                        } else {
+                            height = (int) (parent.getHeight() * constraints.percentileHeight / 100D);
+                        }
+                        isHeightSet = true;
+                    }
 
                     // handles boolean constraints
                     if (constraints.centerInParent) {
@@ -94,6 +124,19 @@ public class JRelativeLayout implements LayoutManager2 {
                     if (constraints.marginBottom >= 0) y -= constraints.marginBottom;
                     if (constraints.marginStart >= 0) x += constraints.marginStart;
                     if (constraints.marginEnd >= 0) x -= constraints.marginEnd;
+
+                    // fix dimensions if the component become out of parent bounds todo: check if this is really necessary
+                    if (isWidthSet) {
+                        if (width + x > parent.getWidth()) {
+                            width = parent.getWidth();
+                        }
+                    }
+
+                    if (isHeightSet) {
+                        if (height + y > parent.getHeight()) {
+                            height = parent.getHeight();
+                        }
+                    }
 
                     // after all calculations, updates the bounds of the current component
                     component.setBounds(x, y, width, height);
@@ -149,7 +192,18 @@ public class JRelativeLayout implements LayoutManager2 {
      * <p>
      * Also, this class implements a simple <b>builder</b> pattern to help define those its constraints values.
      */
+    @SuppressWarnings("unused")
     public static class Constraints {
+
+        /**
+         * Basic helper constant to indicate the component should have the same size of the parent component/container.
+         */
+        public static final double MATCH_PARENT = 100;
+
+        /**
+         * Values that holds sizes for the targeted component. The values will be treated as percentiles related to the parent component/container. E.g.: value 20 means 20% of the parent component/container size (if it is 100 pixels, then the layout manager will adjust component size to have only 20 pixels).
+         */
+        private double percentileWidth = -1, percentileHeight = -1;
 
         /**
          * All the possible boolean constraints indicating {@code true} or {@code false}.
@@ -184,6 +238,16 @@ public class JRelativeLayout implements LayoutManager2 {
                 marginBottom,
                 marginEnd,
                 marginStart;
+
+        public Constraints percentileWidth(double value) {
+            percentileWidth = value;
+            return this;
+        }
+
+        public Constraints percentileHeight(double value) {
+            percentileHeight = value;
+            return this;
+        }
 
         public Constraints centerInParent() {
             return centerInParent(true);
