@@ -84,7 +84,7 @@ public class JRelativeLayout implements LayoutManager2 {
                 if (constraints.bottom != null)
                     y = (constraints.bottom.getY() + constraints.bottom.getHeight()) - height;
                 if (constraints.above != null) y = constraints.above.getY() - height;
-                if (constraints.bellow != null) y = constraints.bellow.getY() + constraints.bellow.getHeight();
+                if (constraints.below != null) y = constraints.below.getY() + constraints.below.getHeight();
                 if (constraints.endOf != null) x = constraints.endOf.getX() + constraints.endOf.getWidth();
                 if (constraints.leftOf != null) x = constraints.leftOf.getX() - width;
 
@@ -170,7 +170,7 @@ public class JRelativeLayout implements LayoutManager2 {
                 top,
                 bottom,
                 above,
-                bellow,
+                below,
                 endOf,
                 leftOf;
 
@@ -271,8 +271,8 @@ public class JRelativeLayout implements LayoutManager2 {
             return this;
         }
 
-        public Constraints bellow(Component c) {
-            bellow = c;
+        public Constraints below(Component c) {
+            below = c;
             return this;
         }
 

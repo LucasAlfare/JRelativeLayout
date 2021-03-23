@@ -52,7 +52,7 @@ public class Testing extends JFrame {
 
         // setup positions of components
         p1.add(a1, rawConstraints().centerVertical());
-        p1.add(b1, rawConstraints().bellow(a1));
+        p1.add(b1, rawConstraints().below(a1));
 
         p2.add(a2);
         p2.add(b2, rawConstraints().parentBottom());
