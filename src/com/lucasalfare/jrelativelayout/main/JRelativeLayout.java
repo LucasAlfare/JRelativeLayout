@@ -64,7 +64,7 @@ public class JRelativeLayout implements LayoutManager2 {
                 if (constraints != null) {
                     int x = component.getX(), y = component.getY(), width = component.getPreferredSize().width, height = component.getPreferredSize().height;
 
-                    // boolean constraints handling
+                    // handles boolean constraints
                     if (constraints.centerInParent) {
                         x = (parent.getWidth() / 2) - (width / 2);
                         y = (parent.getHeight() / 2) - (height / 2);
@@ -77,7 +77,7 @@ public class JRelativeLayout implements LayoutManager2 {
                     if (constraints.parentStart) x = 0;
                     if (constraints.parentEnd) x = parent.getWidth() - width;
 
-                    // component relative constraints handling
+                    // handles component relative constraint
                     if (constraints.start != null) x = constraints.start.getX();
                     if (constraints.end != null)
                         x = constraints.end.getX() + (Math.abs(width - constraints.end.getWidth()));
@@ -89,7 +89,7 @@ public class JRelativeLayout implements LayoutManager2 {
                     if (constraints.endOf != null) x = constraints.endOf.getX() + constraints.endOf.getWidth();
                     if (constraints.leftOf != null) x = constraints.leftOf.getX() - width;
 
-                    // numeric constraints handling
+                    // handles numeric constraints
                     if (constraints.marginTop >= 0) y += constraints.marginTop;
                     if (constraints.marginBottom >= 0) y -= constraints.marginBottom;
                     if (constraints.marginStart >= 0) x += constraints.marginStart;
@@ -97,7 +97,6 @@ public class JRelativeLayout implements LayoutManager2 {
 
                     // after all calculations, updates the bounds of the current component
                     component.setBounds(x, y, width, height);
-
                 }
             }
         }
