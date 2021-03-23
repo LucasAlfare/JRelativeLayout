@@ -147,17 +147,17 @@ public class JRelativeLayout implements LayoutManager2 {
 
     @Override
     public void addLayoutComponent(String name, Component comp) {
-        // TODO
+        /* pass */
     }
 
     @Override
     public void invalidateLayout(Container target) {
-        // TODO
+        /* pass */
     }
 
     @Override
     public float getLayoutAlignmentX(Container target) {
-        return 0;
+        return 0; // is this value indicating a "global margin" for the layout bounds?
     }
 
     @Override
