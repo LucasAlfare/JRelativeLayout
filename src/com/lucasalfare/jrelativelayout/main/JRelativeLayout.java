@@ -191,6 +191,8 @@ public class JRelativeLayout implements LayoutManager2 {
      * Instances of this class should be passed every time a component is added to a container in order to specify its positions behavior when using a {@link JRelativeLayout} layout manager for this.
      * <p>
      * Also, this class implements a simple <b>builder</b> pattern to help define those its constraints values.
+     *
+     * TODO: implement "remaining" sizing constraints. E.g.: width = the remaining free space of the parent.
      */
     @SuppressWarnings("unused")
     public static class Constraints {
