@@ -58,44 +58,46 @@ public class JRelativeLayout implements LayoutManager2 {
      */
     @Override
     public void layoutContainer(Container parent) {
-        for (Component component : parent.getComponents()) {
-            final Constraints constraints = table.get(component);
-            if (constraints != null) {
-                int x = component.getX(), y = component.getY(), width = component.getPreferredSize().width, height = component.getPreferredSize().height;
+        if (parent.getLayout() instanceof JRelativeLayout) {
+            for (Component component : parent.getComponents()) {
+                final Constraints constraints = table.get(component);
+                if (constraints != null) {
+                    int x = component.getX(), y = component.getY(), width = component.getPreferredSize().width, height = component.getPreferredSize().height;
 
-                // boolean constraints handling
-                if (constraints.centerInParent) {
-                    x = (parent.getWidth() / 2) - (width / 2);
-                    y = (parent.getHeight() / 2) - (height / 2);
+                    // boolean constraints handling
+                    if (constraints.centerInParent) {
+                        x = (parent.getWidth() / 2) - (width / 2);
+                        y = (parent.getHeight() / 2) - (height / 2);
+                    }
+
+                    if (constraints.centerHorizontal) x = (parent.getWidth() / 2) - (width / 2);
+                    if (constraints.centerVertical) y = (parent.getHeight() / 2) - (height / 2);
+                    if (constraints.parentTop) y = 0;
+                    if (constraints.parentBottom) y = parent.getHeight() - height;
+                    if (constraints.parentStart) x = 0;
+                    if (constraints.parentEnd) x = parent.getWidth() - width;
+
+                    // component relative constraints handling
+                    if (constraints.start != null) x = constraints.start.getX();
+                    if (constraints.end != null)
+                        x = constraints.end.getX() + (Math.abs(width - constraints.end.getWidth()));
+                    if (constraints.top != null) y = constraints.top.getY();
+                    if (constraints.bottom != null)
+                        y = (constraints.bottom.getY() + constraints.bottom.getHeight()) - height;
+                    if (constraints.above != null) y = constraints.above.getY() - height;
+                    if (constraints.below != null) y = constraints.below.getY() + constraints.below.getHeight();
+                    if (constraints.endOf != null) x = constraints.endOf.getX() + constraints.endOf.getWidth();
+                    if (constraints.leftOf != null) x = constraints.leftOf.getX() - width;
+
+                    // numeric constraints handling
+                    if (constraints.marginTop >= 0) y += constraints.marginTop;
+                    if (constraints.marginBottom >= 0) y -= constraints.marginBottom;
+                    if (constraints.marginStart >= 0) x += constraints.marginStart;
+                    if (constraints.marginEnd >= 0) x -= constraints.marginEnd;
+
+                    // after all calculations, updates the bounds of the current component
+                    component.setBounds(x, y, width, height);
                 }
-
-                if (constraints.centerHorizontal) x = (parent.getWidth() / 2) - (width / 2);
-                if (constraints.centerVertical) y = (parent.getHeight() / 2) - (height / 2);
-                if (constraints.parentTop) y = 0;
-                if (constraints.parentBottom) y = parent.getHeight() - height;
-                if (constraints.parentStart) x = 0;
-                if (constraints.parentEnd) x = parent.getWidth() - width;
-
-                // component relative constraints handling
-                if (constraints.start != null) x = constraints.start.getX();
-                if (constraints.end != null)
-                    x = constraints.end.getX() + (Math.abs(width - constraints.end.getWidth()));
-                if (constraints.top != null) y = constraints.top.getY();
-                if (constraints.bottom != null)
-                    y = (constraints.bottom.getY() + constraints.bottom.getHeight()) - height;
-                if (constraints.above != null) y = constraints.above.getY() - height;
-                if (constraints.below != null) y = constraints.below.getY() + constraints.below.getHeight();
-                if (constraints.endOf != null) x = constraints.endOf.getX() + constraints.endOf.getWidth();
-                if (constraints.leftOf != null) x = constraints.leftOf.getX() - width;
-
-                // numeric constraints handling
-                if (constraints.marginTop >= 0) y += constraints.marginTop;
-                if (constraints.marginBottom >= 0) y -= constraints.marginBottom;
-                if (constraints.marginStart >= 0) x += constraints.marginStart;
-                if (constraints.marginEnd >= 0) x -= constraints.marginEnd;
-
-                // after all calculations, updates the bounds of the current component
-                component.setBounds(x, y, width, height);
             }
         }
     }

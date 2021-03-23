@@ -18,7 +18,7 @@ public class Testing extends JFrame {
 
         JPanel p1 = new JPanel();
         p1.setBackground(Color.BLUE);
-        p1.setBounds(0, 0, 100, 300);
+        p1.setBounds(0, 0, 100, 450);
 
         JPanel p2 = new JPanel();
         p2.setBackground(Color.GREEN);
