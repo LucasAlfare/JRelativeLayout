@@ -97,6 +97,7 @@ public class JRelativeLayout implements LayoutManager2 {
 
                     // after all calculations, updates the bounds of the current component
                     component.setBounds(x, y, width, height);
+
                 }
             }
         }
