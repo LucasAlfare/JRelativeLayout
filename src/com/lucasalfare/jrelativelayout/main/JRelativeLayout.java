@@ -177,7 +177,7 @@ public class JRelativeLayout implements LayoutManager2 {
                 leftOf;
 
         /**
-         * All the numeric constraints that affects the previous definitions by incrementing it.
+         * All the numeric constraints that affects the previous definitions by incrementing it. These constraints affects positioning.
          */
         private int
                 marginTop,
