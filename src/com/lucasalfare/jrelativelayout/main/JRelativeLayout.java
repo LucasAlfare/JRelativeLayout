@@ -25,7 +25,7 @@ public class JRelativeLayout implements LayoutManager2 {
      *
      * @return a new instance of the constraints holder class.
      */
-    public static Constraints rawConstraints() {
+    public static Constraints relativeConstraints() {
         return new JRelativeLayout.Constraints();
     }
 
@@ -44,10 +44,10 @@ public class JRelativeLayout implements LayoutManager2 {
                 table.put(comp, (Constraints) constraints);
             } else {
                 throw new IllegalArgumentException(
-                        "Unable to add some components to this layout with the supplied constraints.");
+                        "Unable to add some components to this layout with the supplied constraints. The constraints must to be a instance of a JRelativeLayout.Constraints class!");
             }
         } else {
-            table.put(comp, rawConstraints());
+            table.put(comp, relativeConstraints());
         }
     }
 
@@ -191,7 +191,7 @@ public class JRelativeLayout implements LayoutManager2 {
      * Instances of this class should be passed every time a component is added to a container in order to specify its positions behavior when using a {@link JRelativeLayout} layout manager for this.
      * <p>
      * Also, this class implements a simple <b>builder</b> pattern to help define those its constraints values.
-     *
+     * <p>
      * TODO: implement "remaining" sizing constraints. E.g.: width = the remaining free space of the parent.
      */
     @SuppressWarnings("unused")
