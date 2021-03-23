@@ -35,7 +35,7 @@ public class JRelativeLayout implements LayoutManager2 {
      * Throws a exception if the {@code constraints} object is not a instance of {@link JRelativeLayout.Constraints} class.
      *
      * @param comp        The component that is being added.
-     * @param constraints The "instructions" athat should be attached to {@code comp}.
+     * @param constraints The "instructions" that should be attached to {@code comp}.
      */
     @Override
     public void addLayoutComponent(Component comp, Object constraints) {
