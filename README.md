@@ -1,71 +1,21 @@
+# Gerenciamento de _layout_ de forma relativa
 
-# A IDÉIA 
- 
- ESSA CLASSE TO FAZENDO PRA TESTAR UMA COISA SO...
- 
- Assim, minha intencao e verificar se e possivel ter um gerenciador
- de layout no Swing que funcione de forma parecida com o proprio
- com.main.JRelativeLayout, que e do Android.
- 
- Minha motivacao pra isso e basicamente o fato de que o com.main.JRelativeLayout
- no Android e um gerenciador muito facil de se utilizar. Ou seja,
- podemos podemos layouts bem complexos apenas por codigo, sem mesmo
- utilizar a interface de construcao do AndroidStudio.
- 
- E fato que ja ha outros gerenciadores de layout no proprio Swing
- que funcionam bem nesse ponto, como o GridBagLayout. Ha tambem
- gerenciadores bem conhecidos, como o MigLayout, o qual e o mais pratico
- que vi ate hoje.
- 
- Entretanto, um gerenciador com a funcionalidade do com.main.JRelativeLayout do
- Android para Swing seria de grande ajuda para mim, visto que tenho
- muita dificuldade em construir telas.
- 
- Considerando o fato de esta classe vir a ser funcional algum dia
- tambem e possivel almejar a possibilidade de ela ser util para outras pessoas
- que venham a ter as mesmas dificuldades que eu. Assim, este projeto
- de classe ficara guardado virtualmente no GitHub.
- 
- Para efeitos de estudo, e importante saber que comecei o desenvolvimento
- disso baseado no exemplo de gerenciador de layout customizado feito
- pela propria Oracle. Nesse exemplo que eles fizeram, alem da explicacao
- eles disponibilizaram a fonte do gerenciador, que no caso trata-se
- de um "com.main.DiagonalLayout", que alinha todos os itens de forma diagonal.
- 
- Aqui tem o link para a pagina do exemplo que to falando:
- https://docs.oracle.com/javase/tutorial/uiswing/layout/custom.html
- 
- Diante disso, copiei alguns trechos que achei basicos para um gerenciador
- e estou adicionado, entao, minhas proprias implementacoes baseando-me
- na minha experiencia de uso do com.main.JRelativeLayout original do Android.
- 
-# PERSPECTIVA PARA A FORMA DE USAR.
- 
- Eu planejo fazer forma de utilizacao desse gerenciador ser bem simples,
- onde o usuario devera, basicamente, ao adicionar o componente X a um
- conteiner, escrever todos os parametros que deseja, em um formato de String.
- 
- Por exemplo:
- 
-`conteiner.add(bt1, "alinharNoTopo=true alinharAbaixoDe=botao3")`
+Este é um projeto de experimento pessoal que aborda a criação de um gerenciador de _layout_ relativo.
 
-Obs.: possivelmente os parametros serao nomeados assim, mas ainda nao estao
- definidos.
- 
- Alem disso, obrigatoriamente ANTES DE ADICONAR os componentes ao conteiner
- o usuario devera definir a propriedade NOME de cada componente. Assim, um
- trecho de codigo de utilizacao devera ser da seguinte forma:
- 
-```
-JButton bt1 = new JButton();
- bt1.setName("botao");
- 
- JButton bt3 = new JButton();
- bt3.setName("botao3");
- 
- ...
- 
- conteiner.add(bt1, "alinharNoTopo=true alinharAbaixoDe=botao3");
-```
+Ao declarar o gerenciamento como algo "relativo" dá-se entender que os componentes irão ser posicionados um em relação a
+outro (ou em alguns casos, posicionados em relação ao contêiner pai). Por exemplo, um componente ```A``` pode ser
+posicionado embaixo de um componente ```B``` com a instrução ```add(A, rawConstraints().below(B)``` e assim por diante.
 
- 
+É importante notar também que é necessário que ao menos 1 componente tenha seu posicionamento definido de forma
+absoluta. Por exemplo, na demonstração acima o componente ```A``` foi posicionado abaixo do componente ```B``` porém o
+componente ```B``` não teve seu posicionado declarado, o que poderia gerar uma ambiguidade como _onde o
+componente ```A``` deve ser de fato posicionado?_. De qualquer forma, este projeto visa resolver esse problema inicial
+com o fato de que todos os componentes têm, por padrão, seus posicionamentos definidos nas coordenadas ```[0, 0]``` do
+contêiner pai.
+
+A intenção desse experimento é ter em mãos uma estrutura de código viável para programação de interfaces visuais de
+complexidade média, permitindo que programador possa definir tais interfaces diretamente através de código manual,
+proporcionando uma escrita relativamente intuitiva e independente de ferramentas de construção de _layouts_.
+
+Além disso, também tem-se como objetivo implementar a mesma ideia em plataformas distintas, podendo ir do _swing_ ao _
+HTML_, este último com auxílio da linguagem _Javascript_.
