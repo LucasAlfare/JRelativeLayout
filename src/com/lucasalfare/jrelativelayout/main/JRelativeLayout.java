@@ -64,7 +64,7 @@ public class JRelativeLayout implements LayoutManager2 {
      * - Last are handled all numeric position constraints that affects previous positioning (e.g. margins/paddings).
      * <p>
      * Finally, after positioning the components, the algorithm attempts to fix the component size if it was turned out of bounds from its parent.
-     *
+     * <p>
      * TODO: add checkings if component is a container/{@link JPanel} in order to define container size automatically of not manually set by {@code percentileWidth(double value)} or {@code percentileHeight(double value)}
      *
      * @param parent The root container that has a {@link JRelativeLayout} manager working.
